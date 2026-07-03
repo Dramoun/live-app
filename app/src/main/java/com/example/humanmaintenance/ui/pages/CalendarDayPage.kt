@@ -45,7 +45,6 @@ fun CalendarDayPage(
       ) {
         TimeBackground(hourHeight.dp)
         //EventLayer(events)
-        ClickLayer(hourHeight.dp)
       }
     }
   }
@@ -73,8 +72,9 @@ fun TimeBackground(hourHeight: Dp) {
     }
   }
 }
+
 @Composable
-fun ClickLayer(hourHeight: Dp) {
+fun EventLayer(hourHeight: Dp) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
