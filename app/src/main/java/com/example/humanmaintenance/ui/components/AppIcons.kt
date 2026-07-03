@@ -31,9 +31,9 @@ fun AppIcon(
 ) {
   Box(
     modifier = Modifier
-        .size(size)
-        .background(color = style.background, shape = CircleShape)
-        .border(width = if (hasBorder) 1.5.dp else 0.dp, color = style.color.copy(alpha = 0.4f), shape = CircleShape),
+      .size(size)
+      .background(color = style.background, shape = CircleShape)
+      .border(width = if (hasBorder) 1.5.dp else 0.dp, color = style.color.copy(alpha = 0.4f), shape = CircleShape),
     contentAlignment = Alignment.Center
   ) {
     Icon(
@@ -43,6 +43,37 @@ fun AppIcon(
       modifier = Modifier.size(size * 0.5f)
     )
   }
+}
+
+// Storable/persistable key for an icon. IconStyle itself can't be stored in a plain
+// data class (Painter requires a @Composable context to resolve), so data classes like
+// CalendarItemData should hold an AppIconType and resolve it to a style at render time
+// via `iconType.toStyle()`.
+enum class AppIconType {
+  INCOME,
+  EXPENSE,
+  HOUSING,
+  FOOD,
+  TRANSPORT,
+  SPORTS,
+  GAMING,
+  SUBSCRIPTIONS,
+  SAVINGS,
+  OTHER
+}
+
+@Composable
+fun AppIconType.toStyle(): IconStyle = when (this) {
+  AppIconType.INCOME -> AppIcons.Income()
+  AppIconType.EXPENSE -> AppIcons.Expense()
+  AppIconType.HOUSING -> AppIcons.Housing()
+  AppIconType.FOOD -> AppIcons.Food()
+  AppIconType.TRANSPORT -> AppIcons.Transport()
+  AppIconType.SPORTS -> AppIcons.Sports()
+  AppIconType.GAMING -> AppIcons.Gaming()
+  AppIconType.SUBSCRIPTIONS -> AppIcons.Subscriptions()
+  AppIconType.SAVINGS -> AppIcons.Savings()
+  AppIconType.OTHER -> AppIcons.Other()
 }
 
 object AppIcons {
@@ -126,6 +157,20 @@ object AppIcons {
     background = AppColors.Surface
   )
   @Composable
+  fun PreviousDay() = IconStyle(
+    icon = painterResource(R.drawable.trending_down_24px),
+    contentDescription = "Previous day",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun NextDay() = IconStyle(
+    icon = painterResource(R.drawable.trending_up_24px),
+    contentDescription = "Next day",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
   fun Menu() = IconStyle(
     icon = painterResource(R.drawable.menu_24px),
     contentDescription = "Menu",
@@ -134,9 +179,9 @@ object AppIcons {
   )
   @Composable
   fun More() = IconStyle(
-      icon = painterResource(R.drawable.more_horiz_24px),
-      contentDescription = "Menu",
-      color = AppColors.TextPrimary,
-      background = AppColors.Surface
-    )
+    icon = painterResource(R.drawable.more_horiz_24px),
+    contentDescription = "Menu",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
 }

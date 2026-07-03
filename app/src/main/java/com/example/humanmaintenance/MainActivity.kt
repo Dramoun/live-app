@@ -22,6 +22,7 @@ import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.pages.MainScreen
+import java.time.LocalDate
 
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +43,8 @@ fun App() {
   val calendarItems = remember { mutableStateListOf<CalendarItemData>() }
   var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS)}
   var showAddSheet by remember { mutableStateOf(false) }
+  var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
+  var date by remember { mutableStateOf(LocalDate.now()) }
 
   AppDrawer (
     currentPage = currentPage,
@@ -53,7 +56,10 @@ fun App() {
       floatingActionButton = {
         AddFloatingActionButton(
           currentPage = currentPage,
-          onClick = { showAddSheet = true }
+          onClick = {
+            editingCalendarItem = null
+            showAddSheet = true
+          }
         )
       },
       topBar = {
@@ -64,24 +70,42 @@ fun App() {
       }
     ) { innerPadding ->
       MainScreen(
+        calendarItems = calendarItems,
         financeItems = financeItems,
         currentPage = currentPage,
-        Modifier.padding(innerPadding)
+        date = date,
+        onDateChange = { newDate ->
+          date = newDate
+        },
+        onCalendarItemClick = { item ->
+          editingCalendarItem = item
+          showAddSheet = true
+        },
+        modifier = Modifier.padding(innerPadding)
       )
 
       if (showAddSheet) {
         AddSheet(
           currentPage = currentPage,
+          updateItem = editingCalendarItem,
+          date = date,
           onDismiss = {
             showAddSheet = false
+            editingCalendarItem = null
           },
           onAddFinance = { item: FinanceItemData ->
             financeItems.add(item)
             showAddSheet = false
           },
           onAddCalendar = { item: CalendarItemData ->
-            calendarItems.add(item)
+            val index = calendarItems.indexOfFirst { it.id == item.id }
+            if (index >= 0) {
+              calendarItems[index] = item
+            } else {
+              calendarItems.add(item)
+            }
             showAddSheet = false
+            editingCalendarItem = null
           }
         )
       }

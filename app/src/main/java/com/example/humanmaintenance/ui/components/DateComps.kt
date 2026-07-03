@@ -12,17 +12,19 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun DateTitleLarge(modifier: Modifier = Modifier) {
-  val today = LocalDate.now()
+fun DateTitleLarge(
+  date: LocalDate,
+  modifier: Modifier = Modifier
+) {
   val dateFormatter = DateTimeFormatter.ofPattern("d MMM (M) yyyy")
   val dayFormatter = DateTimeFormatter.ofPattern("EEEE")
 
-  val dateText = today.format(dateFormatter)
-  val percent = (today.dayOfMonth * 100) / today.lengthOfMonth()
+  val dateText = date.format(dateFormatter)
+  val percent = (date.dayOfMonth * 100) / date.lengthOfMonth()
   val dateResult = "$dateText $percent%"
 
-  val dayText = today.format(dayFormatter)
-  val dayNumber = today.dayOfWeek.value
+  val dayText = date.format(dayFormatter)
+  val dayNumber = date.dayOfWeek.value
   val dayResult = "$dayText ($dayNumber)"
 
   Column(
