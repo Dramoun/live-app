@@ -42,7 +42,7 @@ fun AppDrawer(
           Text("Pages", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge)
           HorizontalDivider()
 
-          Text("Section 1", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
+          Text("Finance", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
           NavigationDrawerItem(
             label = { Text("Finance") },
             selected = currentPage == AppPage.FINANCE_ITEMS,
@@ -53,11 +53,25 @@ fun AppDrawer(
               }
             }
           )
+
+          Text("Finance", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
           NavigationDrawerItem(
             label = { Text("Calendar day") },
             selected = currentPage == AppPage.CALENDAR,
             onClick = {
               onPageSelected(AppPage.CALENDAR)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+
+          Text("other", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
+          NavigationDrawerItem(
+            label = { Text("Todo") },
+            selected = currentPage == AppPage.TODO,
+            onClick = {
+              onPageSelected(AppPage.TODO)
               scope.launch {
                 drawerState.close()
               }

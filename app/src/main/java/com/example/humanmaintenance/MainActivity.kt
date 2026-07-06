@@ -20,7 +20,10 @@ import com.example.humanmaintenance.ui.theme.HumanMaintenanceTheme
 import com.example.humanmaintenance.ui.components.AppTopBar
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
+import com.example.humanmaintenance.ui.map.Effort
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.TodoItemData
+import com.example.humanmaintenance.ui.map.TodoPriority
 import com.example.humanmaintenance.ui.pages.MainScreen
 import java.time.LocalDate
 
@@ -41,12 +44,27 @@ class MainActivity : ComponentActivity() {
 fun App() {
   val financeItems = remember { mutableStateListOf<FinanceItemData>() }
   val calendarItems = remember { mutableStateListOf<CalendarItemData>() }
-  var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS)}
+  val todoItems = remember {
+    mutableStateListOf(
+      TodoItemData(
+        title = "Finish Compose Todo Page",
+        description = "Implement split border and sorting",
+        priorityBase = TodoPriority.LOW,
+        priorityActual = TodoPriority.HIGH,
+        effort = Effort.LONG,
+        date = LocalDate.now(),
+        pushedCount = 5,
+        completed = false
+      )
+    )
+  }
+  var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }
   var showAddSheet by remember { mutableStateOf(false) }
   var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
+  var editingTodoItem by remember { mutableStateOf<TodoItemData?>(null) }
   var date by remember { mutableStateOf(LocalDate.now()) }
 
-  AppDrawer (
+  AppDrawer(
     currentPage = currentPage,
     onPageSelected = { page ->
       currentPage = page
@@ -58,6 +76,7 @@ fun App() {
           currentPage = currentPage,
           onClick = {
             editingCalendarItem = null
+            editingTodoItem = null
             showAddSheet = true
           }
         )
@@ -72,6 +91,7 @@ fun App() {
       MainScreen(
         calendarItems = calendarItems,
         financeItems = financeItems,
+        todoItems = todoItems,
         currentPage = currentPage,
         date = date,
         onDateChange = { newDate ->
@@ -81,6 +101,27 @@ fun App() {
           editingCalendarItem = item
           showAddSheet = true
         },
+        onTodoItemClick = { item ->
+          editingTodoItem = item
+          showAddSheet = true
+        },
+        onPushTodoItem = { id ->
+          val index = todoItems.indexOfFirst { it.id == id }
+          if (index >= 0) {
+            val item = todoItems[index]
+            todoItems[index] = item.copy(
+              date = item.date.plusDays(1),
+              pushedCount = item.pushedCount + 1
+            )
+          }
+        },
+        onSwitchTodoComplete = { id ->
+          val index = todoItems.indexOfFirst { it.id == id }
+          if (index >= 0) {
+            val item = todoItems[index]
+            todoItems[index] = item.copy(completed = !item.completed)
+          }
+        },
         modifier = Modifier.padding(innerPadding)
       )
 
@@ -88,10 +129,12 @@ fun App() {
         AddSheet(
           currentPage = currentPage,
           updateItem = editingCalendarItem,
+          updateTodoItem = editingTodoItem,
           date = date,
           onDismiss = {
             showAddSheet = false
             editingCalendarItem = null
+            editingTodoItem = null
           },
           onAddFinance = { item: FinanceItemData ->
             financeItems.add(item)
@@ -106,6 +149,16 @@ fun App() {
             }
             showAddSheet = false
             editingCalendarItem = null
+          },
+          onAddTodo = { item: TodoItemData ->
+            val index = todoItems.indexOfFirst { it.id == item.id }
+            if (index >= 0) {
+              todoItems[index] = item
+            } else {
+              todoItems.add(item)
+            }
+            showAddSheet = false
+            editingTodoItem = null
           }
         )
       }
