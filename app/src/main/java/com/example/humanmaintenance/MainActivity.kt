@@ -7,12 +7,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.Room
+import com.example.humanmaintenance.db.AppDatabase
+import com.example.humanmaintenance.db.repositories.CalendarRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
 import com.example.humanmaintenance.ui.components.AddSheet
 import com.example.humanmaintenance.ui.components.AppDrawer
@@ -20,6 +25,8 @@ import com.example.humanmaintenance.ui.theme.HumanMaintenanceTheme
 import com.example.humanmaintenance.ui.components.AppTopBar
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
+import com.example.humanmaintenance.ui.map.CalendarViewModel
+import com.example.humanmaintenance.ui.map.CalendarViewModelFactory
 import com.example.humanmaintenance.ui.map.Effort
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.TodoItemData
@@ -32,32 +39,33 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
+
+    val db = Room.databaseBuilder(
+      applicationContext,
+      AppDatabase::class.java,
+      "human_maintenance.db"
+    ).build()
+
+    val calendarRepository = CalendarRepository(db.calendarDao())
+
     setContent {
       HumanMaintenanceTheme {
-        App()
+        val calendarViewModel: CalendarViewModel = viewModel(
+          factory = CalendarViewModelFactory(calendarRepository)
+        )
+        App(calendarViewModel)
       }
     }
   }
 }
 
 @Composable
-fun App() {
+fun App(
+  calendarViewModel: CalendarViewModel
+) {
   val financeItems = remember { mutableStateListOf<FinanceItemData>() }
-  val calendarItems = remember { mutableStateListOf<CalendarItemData>() }
-  val todoItems = remember {
-    mutableStateListOf(
-      TodoItemData(
-        title = "Finish Compose Todo Page",
-        description = "Implement split border and sorting",
-        priorityBase = TodoPriority.LOW,
-        priorityActual = TodoPriority.HIGH,
-        effort = Effort.LONG,
-        date = LocalDate.now(),
-        pushedCount = 5,
-        completed = false
-      )
-    )
-  }
+  val calendarItems by calendarViewModel.calendarItems.collectAsState()
+  val todoItems = remember { mutableStateListOf<TodoItemData>() }
   var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }
   var showAddSheet by remember { mutableStateOf(false) }
   var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
@@ -141,12 +149,7 @@ fun App() {
             showAddSheet = false
           },
           onAddCalendar = { item: CalendarItemData ->
-            val index = calendarItems.indexOfFirst { it.id == item.id }
-            if (index >= 0) {
-              calendarItems[index] = item
-            } else {
-              calendarItems.add(item)
-            }
+            calendarViewModel.addItem(item)
             showAddSheet = false
             editingCalendarItem = null
           },
