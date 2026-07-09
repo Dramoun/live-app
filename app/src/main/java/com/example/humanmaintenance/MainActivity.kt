@@ -18,8 +18,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.Room
 import com.example.humanmaintenance.db.AppDatabase
 import com.example.humanmaintenance.db.migrations.MIGRATION_1_2
+import com.example.humanmaintenance.db.migrations.MIGRATION_2_3
 import com.example.humanmaintenance.db.repositories.CalendarRepository
 import com.example.humanmaintenance.db.repositories.FinanceRepository
+import com.example.humanmaintenance.db.repositories.TodoRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
 import com.example.humanmaintenance.ui.components.AddSheet
 import com.example.humanmaintenance.ui.components.AppDrawer
@@ -27,11 +29,13 @@ import com.example.humanmaintenance.ui.theme.HumanMaintenanceTheme
 import com.example.humanmaintenance.ui.components.AppTopBar
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
-import com.example.humanmaintenance.ui.map.CalendarViewModel
-import com.example.humanmaintenance.ui.map.CalendarViewModelFactory
+import com.example.humanmaintenance.db.viewmodels.CalendarViewModel
+import com.example.humanmaintenance.db.viewmodels.CalendarViewModelFactory
 import com.example.humanmaintenance.ui.map.FinanceItemData
-import com.example.humanmaintenance.ui.map.FinanceViewModel
-import com.example.humanmaintenance.ui.map.FinanceViewModelFactory
+import com.example.humanmaintenance.db.viewmodels.FinanceViewModel
+import com.example.humanmaintenance.db.viewmodels.FinanceViewModelFactory
+import com.example.humanmaintenance.db.viewmodels.TodoViewModel
+import com.example.humanmaintenance.db.viewmodels.TodoViewModelFactory
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.pages.MainScreen
 import java.time.LocalDate
@@ -47,10 +51,12 @@ class MainActivity : ComponentActivity() {
       AppDatabase::class.java,
       "human_maintenance.db"
     ).addMigrations(MIGRATION_1_2)
+      .addMigrations(MIGRATION_2_3)
       .build()
 
     val calendarRepository = CalendarRepository(db.calendarDao())
     val financeRepository = FinanceRepository(db.financeDao())
+    val todoRepository = TodoRepository(db.todoDao())
 
     setContent {
       HumanMaintenanceTheme {
@@ -60,9 +66,13 @@ class MainActivity : ComponentActivity() {
         val financeViewModel: FinanceViewModel = viewModel(
           factory = FinanceViewModelFactory(financeRepository)
         )
+        val todoViewModel: TodoViewModel = viewModel(
+          factory = TodoViewModelFactory(todoRepository)
+        )
         App(
           calendarViewModel = calendarViewModel,
-          financeViewModel = financeViewModel
+          financeViewModel = financeViewModel,
+          todoViewModel = todoViewModel
         )
       }
     }
@@ -72,11 +82,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App(
   calendarViewModel: CalendarViewModel,
-  financeViewModel: FinanceViewModel
+  financeViewModel: FinanceViewModel,
+  todoViewModel: TodoViewModel
 ) {
   val financeItems by financeViewModel.financeItems.collectAsState()
   val calendarItems by calendarViewModel.calendarItems.collectAsState()
-  val todoItems = remember { mutableStateListOf<TodoItemData>() }
+  val todoItems by todoViewModel.todoItems.collectAsState()
   var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }
   var showAddSheet by remember { mutableStateOf(false) }
   var editingFinanceItem by remember { mutableStateOf<FinanceItemData?>(null) }
@@ -130,21 +141,10 @@ fun App(
           showAddSheet = true
         },
         onPushTodoItem = { id ->
-          val index = todoItems.indexOfFirst { it.id == id }
-          if (index >= 0) {
-            val item = todoItems[index]
-            todoItems[index] = item.copy(
-              date = item.date.plusDays(1),
-              pushedCount = item.pushedCount + 1
-            )
-          }
+          todoViewModel.pushTodoItem(id)
         },
         onSwitchTodoComplete = { id ->
-          val index = todoItems.indexOfFirst { it.id == id }
-          if (index >= 0) {
-            val item = todoItems[index]
-            todoItems[index] = item.copy(completed = !item.completed)
-          }
+          todoViewModel.toggleComplete(id)
         },
         modifier = Modifier.padding(innerPadding)
       )
@@ -173,12 +173,7 @@ fun App(
             editingCalendarItem = null
           },
           onAddTodo = { item: TodoItemData ->
-            val index = todoItems.indexOfFirst { it.id == item.id }
-            if (index >= 0) {
-              todoItems[index] = item
-            } else {
-              todoItems.add(item)
-            }
+            todoViewModel.addItem(item)
             showAddSheet = false
             editingTodoItem = null
           }

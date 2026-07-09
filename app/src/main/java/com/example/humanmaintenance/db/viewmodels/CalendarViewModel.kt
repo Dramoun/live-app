@@ -1,9 +1,10 @@
-package com.example.humanmaintenance.ui.map
+package com.example.humanmaintenance.db.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.humanmaintenance.db.repositories.CalendarRepository
+import com.example.humanmaintenance.ui.map.CalendarItemData
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
