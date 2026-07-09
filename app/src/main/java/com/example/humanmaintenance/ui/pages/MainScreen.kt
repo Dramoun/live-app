@@ -16,6 +16,7 @@ fun MainScreen(
   currentPage: AppPage,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
+  onFinanceItemClick: (FinanceItemData) -> Unit = {},
   onCalendarItemClick: (CalendarItemData) -> Unit = {},
   onTodoItemClick: (TodoItemData) -> Unit = {},
   onPushTodoItem: (id: String) -> Unit = {},
@@ -34,6 +35,7 @@ fun MainScreen(
     AppPage.FINANCE_ITEMS ->
       FinanceItemsPage(
         items = financeItems,
+        onItemClick = onFinanceItemClick,
         modifier = modifier
       )
 

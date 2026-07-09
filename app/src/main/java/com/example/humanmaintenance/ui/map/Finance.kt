@@ -1,6 +1,6 @@
 package com.example.humanmaintenance.ui.map
 
-import com.example.humanmaintenance.ui.components.IconStyle
+import com.example.humanmaintenance.ui.components.AppIconType
 import java.util.UUID
 
 enum class Category(val label: String) {
@@ -23,7 +23,7 @@ enum class Recurrence(val label: String) {
 
 data class FinanceItemData(
   val header: String,
-  val icon: IconStyle,
+  val icon: AppIconType,
   val category: Category,
   val priority: Priority,
   val recurrence: Recurrence,

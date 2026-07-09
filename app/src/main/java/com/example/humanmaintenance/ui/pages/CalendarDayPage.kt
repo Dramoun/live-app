@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -64,7 +65,7 @@ fun CalendarDayPage(
         )
       }
 
-      DateTitleLarge(date = date)
+      DateTitleLarge(date = date, modifier = Modifier.clickable { onDateChange(LocalDate.now())})
 
       IconButton(onClick = { onDateChange(date.plusDays(1)) }) {
         AppIcon(

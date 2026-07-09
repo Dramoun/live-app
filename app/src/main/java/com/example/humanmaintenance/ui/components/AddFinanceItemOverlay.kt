@@ -28,18 +28,16 @@ import com.example.humanmaintenance.ui.map.Recurrence
 
 @Composable
 fun AddFinanceItemOverlay(
+  updateItem: FinanceItemData?,
   onDismiss: () -> Unit,
   onAdd: (FinanceItemData) -> Unit
 ) {
-  var title by remember { mutableStateOf("") }
-  var amount by remember { mutableStateOf("") }
+  var title by remember { mutableStateOf(updateItem?.header ?:"") }
+  var amount by remember { mutableStateOf(updateItem?.amount.toString()) }
 
-  var category by remember { mutableStateOf(Category.EXPENSE) }
-  var priority by remember { mutableStateOf(Priority.ESSENTIAL) }
-  var recurrence by remember { mutableStateOf(Recurrence.MONTHLY) }
-
-  val incomeIcon = AppIcons.Income()
-  val expenseIcon = AppIcons.Expense()
+  var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
+  var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
+  var recurrence by remember { mutableStateOf(updateItem?.recurrence ?: Recurrence.MONTHLY) }
 
   Dialog(onDismissRequest = onDismiss) {
     Card {
@@ -48,7 +46,7 @@ fun AddFinanceItemOverlay(
           .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
       ) {
-        Text("Add item")
+        Text(if (updateItem != null) "Update Item" else "Add Item")
 
         OutlinedTextField(
           value = title,
@@ -106,18 +104,19 @@ fun AddFinanceItemOverlay(
               FinanceItemData(
                 header = title,
                 icon = when (category) {
-                  Category.INCOME -> incomeIcon
-                  Category.EXPENSE -> expenseIcon
+                  Category.INCOME -> AppIconType.INCOME
+                  Category.EXPENSE -> AppIconType.EXPENSE
                 },
                 category = category,
                 priority = priority,
                 recurrence = recurrence,
-                amount = amount.toIntOrNull() ?: 0
+                amount = amount.toIntOrNull() ?: 0,
+                id = updateItem?.id ?: java.util.UUID.randomUUID().toString()
               )
             )
           }
         ) {
-          Text("Add")
+          Text("Save")
         }
       }
     }

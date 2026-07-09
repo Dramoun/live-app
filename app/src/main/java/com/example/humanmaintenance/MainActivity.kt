@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.Room
 import com.example.humanmaintenance.db.AppDatabase
+import com.example.humanmaintenance.db.migrations.MIGRATION_1_2
 import com.example.humanmaintenance.db.repositories.CalendarRepository
+import com.example.humanmaintenance.db.repositories.FinanceRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
 import com.example.humanmaintenance.ui.components.AddSheet
 import com.example.humanmaintenance.ui.components.AppDrawer
@@ -27,10 +29,10 @@ import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.CalendarViewModel
 import com.example.humanmaintenance.ui.map.CalendarViewModelFactory
-import com.example.humanmaintenance.ui.map.Effort
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.FinanceViewModel
+import com.example.humanmaintenance.ui.map.FinanceViewModelFactory
 import com.example.humanmaintenance.ui.map.TodoItemData
-import com.example.humanmaintenance.ui.map.TodoPriority
 import com.example.humanmaintenance.ui.pages.MainScreen
 import java.time.LocalDate
 
@@ -44,16 +46,24 @@ class MainActivity : ComponentActivity() {
       applicationContext,
       AppDatabase::class.java,
       "human_maintenance.db"
-    ).build()
+    ).addMigrations(MIGRATION_1_2)
+      .build()
 
     val calendarRepository = CalendarRepository(db.calendarDao())
+    val financeRepository = FinanceRepository(db.financeDao())
 
     setContent {
       HumanMaintenanceTheme {
         val calendarViewModel: CalendarViewModel = viewModel(
           factory = CalendarViewModelFactory(calendarRepository)
         )
-        App(calendarViewModel)
+        val financeViewModel: FinanceViewModel = viewModel(
+          factory = FinanceViewModelFactory(financeRepository)
+        )
+        App(
+          calendarViewModel = calendarViewModel,
+          financeViewModel = financeViewModel
+        )
       }
     }
   }
@@ -61,13 +71,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(
-  calendarViewModel: CalendarViewModel
+  calendarViewModel: CalendarViewModel,
+  financeViewModel: FinanceViewModel
 ) {
-  val financeItems = remember { mutableStateListOf<FinanceItemData>() }
+  val financeItems by financeViewModel.financeItems.collectAsState()
   val calendarItems by calendarViewModel.calendarItems.collectAsState()
   val todoItems = remember { mutableStateListOf<TodoItemData>() }
   var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }
   var showAddSheet by remember { mutableStateOf(false) }
+  var editingFinanceItem by remember { mutableStateOf<FinanceItemData?>(null) }
   var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
   var editingTodoItem by remember { mutableStateOf<TodoItemData?>(null) }
   var date by remember { mutableStateOf(LocalDate.now()) }
@@ -105,6 +117,10 @@ fun App(
         onDateChange = { newDate ->
           date = newDate
         },
+        onFinanceItemClick = { item ->
+          editingFinanceItem = item
+          showAddSheet = true
+        },
         onCalendarItemClick = { item ->
           editingCalendarItem = item
           showAddSheet = true
@@ -136,17 +152,20 @@ fun App(
       if (showAddSheet) {
         AddSheet(
           currentPage = currentPage,
-          updateItem = editingCalendarItem,
+          updateFinanceItem = editingFinanceItem,
+          updateCalendarItem = editingCalendarItem,
           updateTodoItem = editingTodoItem,
           date = date,
           onDismiss = {
             showAddSheet = false
+            editingFinanceItem = null
             editingCalendarItem = null
             editingTodoItem = null
           },
           onAddFinance = { item: FinanceItemData ->
-            financeItems.add(item)
+            financeViewModel.addItem(item)
             showAddSheet = false
+            editingFinanceItem = null
           },
           onAddCalendar = { item: CalendarItemData ->
             calendarViewModel.addItem(item)

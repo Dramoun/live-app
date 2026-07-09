@@ -59,7 +59,9 @@ enum class AppIconType {
   GAMING,
   SUBSCRIPTIONS,
   SAVINGS,
-  OTHER
+  OTHER,
+  PREVIOUS_DAY,
+  NEXT_DAY
 }
 
 @Composable
@@ -74,6 +76,8 @@ fun AppIconType.toStyle(): IconStyle = when (this) {
   AppIconType.SUBSCRIPTIONS -> AppIcons.Subscriptions()
   AppIconType.SAVINGS -> AppIcons.Savings()
   AppIconType.OTHER -> AppIcons.Other()
+  AppIconType.PREVIOUS_DAY -> AppIcons.PreviousDay()
+  AppIconType.NEXT_DAY -> AppIcons.NextDay()
 }
 
 object AppIcons {

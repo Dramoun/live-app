@@ -10,7 +10,8 @@ import java.time.LocalDate
 @Composable
 fun AddSheet(
   currentPage: AppPage,
-  updateItem: CalendarItemData? = null,
+  updateFinanceItem: FinanceItemData? = null,
+  updateCalendarItem: CalendarItemData? = null,
   updateTodoItem: TodoItemData? = null,
   date: LocalDate = LocalDate.now(),
   onDismiss: () -> Unit,
@@ -21,6 +22,7 @@ fun AddSheet(
   when (currentPage) {
     AppPage.FINANCE_ITEMS -> {
       AddFinanceItemOverlay(
+        updateItem = updateFinanceItem,
         onDismiss = onDismiss,
         onAdd = onAddFinance
       )
@@ -28,7 +30,7 @@ fun AddSheet(
 
     AppPage.CALENDAR -> {
       AddCalendarItemOverlay(
-        updateItem = updateItem,
+        updateItem = updateCalendarItem,
         date = date,
         onDismiss = onDismiss,
         onAdd = onAddCalendar

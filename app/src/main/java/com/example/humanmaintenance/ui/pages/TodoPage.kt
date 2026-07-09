@@ -71,7 +71,7 @@ fun TodoPage(
         )
       }
 
-      DateTitleLarge(date = date)
+      DateTitleLarge(date = date, modifier = Modifier.clickable { onDateChange(LocalDate.now())})
 
       IconButton(onClick = { onDateChange(date.plusDays(1)) }) {
         AppIcon(

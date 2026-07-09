@@ -2,6 +2,7 @@ package com.example.humanmaintenance.ui.components
 
 import android.text.Layout
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -26,8 +27,11 @@ fun AppTopBar(
 
   CenterAlignedTopAppBar(
     title = {
-      Column{
-        if (page != AppPage.CALENDAR) {
+      Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+      ){
+        if (page == AppPage.FINANCE_ITEMS) {
           Text(
             text = "${today.format(formatter)} (${today.monthValue}) ${today.year}",
             style = MaterialTheme.typography.labelSmall,
@@ -43,6 +47,7 @@ fun AppTopBar(
         AppIcon(AppIcons.Menu())
       }
     },
+    // TODO: no feature currently here but button is ready
     actions = {
       IconButton(onClick = { }) {
         AppIcon(AppIcons.More())
