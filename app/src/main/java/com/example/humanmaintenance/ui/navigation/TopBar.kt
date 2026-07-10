@@ -1,6 +1,5 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.navigation
 
-import android.text.Layout
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -12,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.humanmaintenance.ui.components.AppIcon
+import com.example.humanmaintenance.ui.components.AppIcons
 import com.example.humanmaintenance.ui.map.AppPage
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

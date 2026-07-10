@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -23,10 +22,10 @@ import com.example.humanmaintenance.db.repositories.CalendarRepository
 import com.example.humanmaintenance.db.repositories.FinanceRepository
 import com.example.humanmaintenance.db.repositories.TodoRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
-import com.example.humanmaintenance.ui.components.AddSheet
-import com.example.humanmaintenance.ui.components.AppDrawer
+import com.example.humanmaintenance.ui.overlays.AddSheet
+import com.example.humanmaintenance.ui.navigation.AppDrawer
 import com.example.humanmaintenance.ui.theme.HumanMaintenanceTheme
-import com.example.humanmaintenance.ui.components.AppTopBar
+import com.example.humanmaintenance.ui.navigation.AppTopBar
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.db.viewmodels.CalendarViewModel

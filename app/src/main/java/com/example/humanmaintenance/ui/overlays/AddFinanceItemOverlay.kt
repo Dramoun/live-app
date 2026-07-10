@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,10 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.humanmaintenance.ui.components.AppIconType
+import com.example.humanmaintenance.ui.components.ChipSelector
 import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.Priority
 import com.example.humanmaintenance.ui.map.Recurrence
+import java.util.UUID
 
 
 @Composable
@@ -111,7 +114,7 @@ fun AddFinanceItemOverlay(
                 priority = priority,
                 recurrence = recurrence,
                 amount = amount.toIntOrNull() ?: 0,
-                id = updateItem?.id ?: java.util.UUID.randomUUID().toString()
+                id = updateItem?.id ?: UUID.randomUUID().toString()
               )
             )
           }

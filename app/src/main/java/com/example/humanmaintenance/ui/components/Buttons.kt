@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.example.humanmaintenance.ui.map.AppPage
 
+// TODO: do i need currentPage arg?
 @Composable
 fun AddFloatingActionButton(
     currentPage: AppPage,

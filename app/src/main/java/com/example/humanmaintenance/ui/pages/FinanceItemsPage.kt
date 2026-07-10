@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.humanmaintenance.ui.components.FinanceItem
+import com.example.humanmaintenance.ui.items.FinanceItem
 import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import kotlin.collections.forEach

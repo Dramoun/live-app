@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.items
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.humanmaintenance.ui.components.AppIcon
+import com.example.humanmaintenance.ui.components.IconStyle
 import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.Priority
 import com.example.humanmaintenance.ui.map.Recurrence

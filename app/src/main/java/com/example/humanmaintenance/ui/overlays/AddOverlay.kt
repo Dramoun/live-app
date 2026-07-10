@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.runtime.Composable
 import com.example.humanmaintenance.ui.map.AppPage

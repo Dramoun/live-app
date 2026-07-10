@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.humanmaintenance.ui.components.ChipSelector
 import com.example.humanmaintenance.ui.map.Effort
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.map.TodoPriority

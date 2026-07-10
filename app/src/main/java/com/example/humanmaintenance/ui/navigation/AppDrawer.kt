@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

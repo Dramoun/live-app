@@ -41,3 +41,10 @@ fun DateTitleLarge(
     )
   }
 }
+
+// TODO: refactor into
+//  1. TodayDateTitle
+//  2. MonthDateTitle
+//  3. YearDateTitle (HARD MAYBE ON THIS ONE, save for later later)
+//  also these should handle on clicks, like title on click, left onClick, right onClick
+//  and also add the missing buttons as mentioned above

@@ -1,4 +1,4 @@
-package com.example.humanmaintenance.ui.components
+package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,8 +26,14 @@ import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.Tag
 import com.example.humanmaintenance.ui.map.Type
 import com.example.humanmaintenance.ui.components.AppIconType
+import com.example.humanmaintenance.ui.components.ChipSelector
+import com.example.humanmaintenance.ui.components.ChipSelectorMulti
+import com.example.humanmaintenance.ui.components.ColorPicker
+import com.example.humanmaintenance.ui.components.IconPicker
+import com.example.humanmaintenance.ui.components.TimeInput
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.UUID
 
 @Composable
 fun AddCalendarItemOverlay(
@@ -150,7 +156,7 @@ fun AddCalendarItemOverlay(
                   tags = tags,
                   color = color,
                   icon = icon,
-                  id = updateItem?.id ?: java.util.UUID.randomUUID().toString()
+                  id = updateItem?.id ?: UUID.randomUUID().toString()
                 )
               )
             },
