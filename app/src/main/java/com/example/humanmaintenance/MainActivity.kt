@@ -86,6 +86,8 @@ fun App(
   todoViewModel: TodoViewModel
 ) {
   val financeItems by financeViewModel.financeItems.collectAsState()
+  // TODO: use this somehow to prepare filtered data per month
+  //  should then be much more manageble to look up data
   val calendarItems by calendarViewModel.calendarItems.collectAsState()
   val todoItems by todoViewModel.todoItems.collectAsState()
   var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }

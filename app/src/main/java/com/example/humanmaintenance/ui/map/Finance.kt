@@ -18,7 +18,7 @@ enum class Recurrence(val label: String) {
   ONE_TIME("One-time"),
   WEEKLY("Weekly"),
   MONTHLY("Monthly"),
-  YEARLY("Early")
+  YEARLY("Yearly")
 }
 
 data class FinanceItemData(
