@@ -1,7 +1,3 @@
-Here's how I'd write it as a development plan/TODO.
-
----
-
 # Calendar Month Page
 
 ## Data Model
