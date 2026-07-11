@@ -32,6 +32,7 @@ fun IconPicker(
       horizontalArrangement = Arrangement.spacedBy(8.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+      // TODO: have a custom list of icons to display, do not use AppIconType
       AppIconType.entries.forEach { iconType ->
 
         val isSelected = iconType == selected
