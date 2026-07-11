@@ -2,7 +2,6 @@
 
 ## Current
 
-- CRUD Completion
 - Finance Month Page Rework
 - Calendar Month Page
 
