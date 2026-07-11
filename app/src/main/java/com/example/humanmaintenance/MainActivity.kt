@@ -168,6 +168,11 @@ fun App(
             showAddSheet = false
             editingFinanceItem = null
           },
+          onFinanceDelete = { item: FinanceItemData ->
+            financeViewModel.deleteItem(item)
+            showAddSheet = false
+            editingFinanceItem = null
+          },
           onAddCalendar = { item: CalendarItemData ->
             calendarViewModel.addItem(item)
             showAddSheet = false
@@ -175,6 +180,16 @@ fun App(
           },
           onAddTodo = { item: TodoItemData ->
             todoViewModel.addItem(item)
+            showAddSheet = false
+            editingTodoItem = null
+          },
+          onCalendarDelete = { item: CalendarItemData ->
+            calendarViewModel.deleteItem(item)
+            showAddSheet = false
+            editingCalendarItem = null
+          },
+          onTodoDelete = { item: TodoItemData ->
+            todoViewModel.deleteItem(item)
             showAddSheet = false
             editingTodoItem = null
           }

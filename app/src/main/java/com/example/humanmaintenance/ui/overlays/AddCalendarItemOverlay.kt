@@ -31,6 +31,8 @@ import com.example.humanmaintenance.ui.components.ChipSelectorMulti
 import com.example.humanmaintenance.ui.components.ColorPicker
 import com.example.humanmaintenance.ui.components.IconPicker
 import com.example.humanmaintenance.ui.components.TimeInput
+import com.example.humanmaintenance.ui.map.Category
+import com.example.humanmaintenance.ui.map.FinanceItemData
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -40,6 +42,7 @@ fun AddCalendarItemOverlay(
   updateItem: CalendarItemData?,
   date: LocalDate = LocalDate.now(),
   onDismiss: () -> Unit,
+  onDelete: (CalendarItemData) -> Unit,
   onAdd: (CalendarItemData) -> Unit
 ) {
   var title by remember { mutableStateOf(updateItem?.title ?: "") }
@@ -56,11 +59,7 @@ fun AddCalendarItemOverlay(
   Dialog(
     onDismissRequest = onDismiss
   ) {
-    Card(
-      modifier = Modifier
-        .fillMaxWidth(0.9f)
-        .fillMaxHeight(0.85f)
-    ) {
+    Card{
       Column(
         modifier = Modifier
           .padding(16.dp)
@@ -132,40 +131,24 @@ fun AddCalendarItemOverlay(
           }
         )
 
-        Row(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-          OutlinedButton(
-            onClick = onDismiss,
-            modifier = Modifier.weight(1f)
-          ) {
-            Text("Close")
-          }
-
-          Button(
-            onClick = {
-              onAdd(
-                CalendarItemData(
-                  title = title,
-                  description = description,
-                  date = itemDate,
-                  start = startTime,
-                  end = endTime,
-                  type = type,
-                  tags = tags,
-                  color = color,
-                  icon = icon,
-                  id = updateItem?.id ?: UUID.randomUUID().toString()
-                )
-              )
-            },
-            enabled = title.isNotBlank(),
-            modifier = Modifier.weight(1f)
-          ) {
-            Text("Save")
-          }
-        }
+        OverLayFooter(
+          itemData = CalendarItemData(
+            title = title,
+            description = description,
+            date = itemDate,
+            start = startTime,
+            end = endTime,
+            type = type,
+            tags = tags,
+            color = color,
+            icon = icon,
+            id = updateItem?.id ?: UUID.randomUUID().toString()
+          ),
+          itemExists = updateItem != null,
+          onDismiss = onDismiss,
+          onDelete = onDelete,
+          onAdd = onAdd
+        )
       }
     }
   }

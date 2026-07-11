@@ -33,10 +33,11 @@ import java.util.UUID
 fun AddFinanceItemOverlay(
   updateItem: FinanceItemData?,
   onDismiss: () -> Unit,
+  onDelete: (FinanceItemData) -> Unit,
   onAdd: (FinanceItemData) -> Unit
 ) {
   var title by remember { mutableStateOf(updateItem?.header ?:"") }
-  var amount by remember { mutableStateOf(updateItem?.amount.toString()) }
+  var amount by remember { mutableStateOf(updateItem?.amount?.toString() ?: "") }
 
   var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
@@ -93,35 +94,24 @@ fun AddFinanceItemOverlay(
         )
       }
 
-      Row(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
-        horizontalArrangement = Arrangement.End
-      ) {
-        TextButton(onClick = onDismiss) {
-          Text("Cancel")
-        }
-
-        Button(
-          onClick = {
-            onAdd(
-              FinanceItemData(
-                header = title,
-                icon = when (category) {
-                  Category.INCOME -> AppIconType.INCOME
-                  Category.EXPENSE -> AppIconType.EXPENSE
-                },
-                category = category,
-                priority = priority,
-                recurrence = recurrence,
-                amount = amount.toIntOrNull() ?: 0,
-                id = updateItem?.id ?: UUID.randomUUID().toString()
-              )
-            )
-          }
-        ) {
-          Text("Save")
-        }
-      }
+      OverLayFooter(
+        itemData = FinanceItemData(
+          header = title,
+          icon = when (category) {
+            Category.INCOME -> AppIconType.INCOME
+            Category.EXPENSE -> AppIconType.EXPENSE
+          },
+          category = category,
+          priority = priority,
+          recurrence = recurrence,
+          amount = amount.toIntOrNull() ?: 0,
+          id = updateItem?.id ?: UUID.randomUUID().toString()
+        ),
+        itemExists = updateItem != null,
+        onDismiss = onDismiss,
+        onDelete = onDelete,
+        onAdd = onAdd
+      )
     }
   }
 }

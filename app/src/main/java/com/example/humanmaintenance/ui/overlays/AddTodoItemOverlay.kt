@@ -21,17 +21,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.humanmaintenance.ui.components.AppIconType
 import com.example.humanmaintenance.ui.components.ChipSelector
+import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.Effort
+import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.map.TodoPriority
 import java.time.LocalDate
+import java.util.UUID
 
 @Composable
 fun AddTodoItemOverlay(
   updateItem: TodoItemData?,
   date: LocalDate = LocalDate.now(),
   onDismiss: () -> Unit,
+  onDelete: (TodoItemData) -> Unit,
   onAdd: (TodoItemData) -> Unit
 ) {
   var title by remember { mutableStateOf(updateItem?.title ?: "") }
@@ -40,11 +45,7 @@ fun AddTodoItemOverlay(
   var effort by remember { mutableStateOf(updateItem?.effort ?: Effort.STANDARD) }
 
   Dialog(onDismissRequest = onDismiss) {
-    Card(
-      modifier = Modifier
-        .fillMaxWidth(0.9f)
-        .fillMaxHeight(0.85f)
-    ) {
+    Card{
       Column(
         modifier = Modifier
           .padding(16.dp)
@@ -83,42 +84,23 @@ fun AddTodoItemOverlay(
           text = { it.label }
         )
 
-        Row(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-          OutlinedButton(
-            onClick = onDismiss,
-            modifier = Modifier.weight(1f)
-          ) {
-            Text("Close")
-          }
-
-          Button(
-            onClick = {
-              val item = updateItem?.copy(
-                title = title,
-                description = description.ifBlank { null },
-                priorityBase = priority,
-                effort = effort
-              ) ?: TodoItemData(
-                title = title,
-                description = description.ifBlank { null },
-                priorityBase = priority,
-                priorityActual = priority,
-                effort = effort,
-                date = date,
-                pushedCount = 0,
-                completed = false
-              )
-              onAdd(item)
-            },
-            enabled = title.isNotBlank(),
-            modifier = Modifier.weight(1f)
-          ) {
-            Text("Save")
-          }
-        }
+        OverLayFooter(
+          itemData = TodoItemData(
+            title = title,
+            description = description.ifBlank { null },
+            priorityBase = priority,
+            priorityActual = priority,
+            effort = effort,
+            date = date,
+            pushedCount = 0,
+            completed = false,
+            id = updateItem?.id ?: UUID.randomUUID().toString()
+          ),
+          itemExists = updateItem != null,
+          onDismiss = onDismiss,
+          onDelete = onDelete,
+          onAdd = onAdd
+        )
       }
     }
   }

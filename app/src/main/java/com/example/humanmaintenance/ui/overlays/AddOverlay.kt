@@ -16,14 +16,18 @@ fun AddSheet(
   date: LocalDate = LocalDate.now(),
   onDismiss: () -> Unit,
   onAddFinance: (FinanceItemData) -> Unit,
+  onFinanceDelete: (FinanceItemData) -> Unit,
   onAddCalendar: (CalendarItemData) -> Unit,
-  onAddTodo: (TodoItemData) -> Unit
+  onCalendarDelete: (CalendarItemData) -> Unit,
+  onAddTodo: (TodoItemData) -> Unit,
+  onTodoDelete: (TodoItemData) -> Unit
 ) {
   when (currentPage) {
     AppPage.FINANCE_ITEMS -> {
       AddFinanceItemOverlay(
         updateItem = updateFinanceItem,
         onDismiss = onDismiss,
+        onDelete = onFinanceDelete,
         onAdd = onAddFinance
       )
     }
@@ -33,6 +37,7 @@ fun AddSheet(
         updateItem = updateCalendarItem,
         date = date,
         onDismiss = onDismiss,
+        onDelete = onCalendarDelete,
         onAdd = onAddCalendar
       )
     }
@@ -42,6 +47,7 @@ fun AddSheet(
         updateItem = updateTodoItem,
         date = date,
         onDismiss = onDismiss,
+        onDelete = onTodoDelete,
         onAdd = onAddTodo
       )
     }
