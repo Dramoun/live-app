@@ -2,15 +2,12 @@ package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +23,7 @@ import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.Priority
 import com.example.humanmaintenance.ui.map.Recurrence
+import java.time.LocalDate
 import java.util.UUID
 
 
@@ -38,6 +36,8 @@ fun AddFinanceItemOverlay(
 ) {
   var title by remember { mutableStateOf(updateItem?.header ?:"") }
   var amount by remember { mutableStateOf(updateItem?.amount?.toString() ?: "") }
+  // TODO: gotta add selection of date
+  var itemDate by remember { mutableStateOf(updateItem?.initialDate ?: LocalDate.now())}
 
   var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
@@ -105,7 +105,8 @@ fun AddFinanceItemOverlay(
           priority = priority,
           recurrence = recurrence,
           amount = amount.toIntOrNull() ?: 0,
-          id = updateItem?.id ?: UUID.randomUUID().toString()
+          id = updateItem?.id ?: UUID.randomUUID().toString(),
+          initialDate = itemDate
         ),
         itemExists = updateItem != null,
         onDismiss = onDismiss,
