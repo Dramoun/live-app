@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,29 +15,17 @@ import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.AppIcon
 import com.example.humanmaintenance.ui.components.AppIcons
 import com.example.humanmaintenance.ui.components.DayTitleLarge
-import com.example.humanmaintenance.ui.items.TodoItem
-import com.example.humanmaintenance.ui.map.TodoItemData
-import com.example.humanmaintenance.ui.map.sortedTodoItems
 import java.time.LocalDate
 
 @Composable
-fun TodoPage(
+fun BaseDayPage(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
-  todoItems: List<TodoItemData> = emptyList(),
-  onItemClick: (TodoItemData) -> Unit = {},
-  onPushItem: (id: String) -> Unit = {},
-  onSwitchComplete: (id: String) -> Unit = {},
-  modifier: Modifier = Modifier
+  content: @Composable () -> Unit = {}
 ) {
-  val todayItems = sortedTodoItems(
-    todoItems.filter { it.date == date }
-  )
-
   Column(
-    modifier = modifier
-      .fillMaxSize()
-      .padding(16.dp),
+    modifier = modifier.fillMaxSize().padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
     Row(
@@ -66,37 +52,6 @@ fun TodoPage(
       }
     }
 
-    TodoItemsLayer(
-      items = todayItems,
-      pushItem = onPushItem,
-      switchComplete = onSwitchComplete,
-      onItemClick = onItemClick,
-      modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
-    )
-  }
-}
-
-@Composable
-fun TodoItemsLayer(
-  items: List<TodoItemData>,
-  pushItem: (id: String) -> Unit,
-  switchComplete: (id: String) -> Unit,
-  onItemClick: (TodoItemData) -> Unit = {},
-  modifier: Modifier = Modifier
-) {
-  Column(
-    modifier = modifier,
-    verticalArrangement = Arrangement.spacedBy(12.dp)
-  ) {
-    items.forEach { item ->
-      TodoItem(
-        data = item,
-        pushItem = pushItem,
-        switchComplete = switchComplete,
-        onClick = { onItemClick(item) }
-      )
-    }
+    content()
   }
 }
