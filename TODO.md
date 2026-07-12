@@ -2,7 +2,7 @@
 
 ## Current
 
-- Finance Month Page Rework
+- Finance items need also endDate to be stored for recurring items, so we know when to stop displaying them
 - Calendar Month Page
 
 ---
@@ -11,18 +11,17 @@
 
 Existing
 
-- Single page for item creation (non time specific)
+- Day Page
 
 Planned
 
 - Month View
 - Week View
 - Year View
-- All Items
 - Analytics
 - Category Totals
 - Income vs Expense
-- Recurring Payments
+- Active Recurring Payments
 
 ---
 
@@ -50,6 +49,7 @@ Future Ideas
 
 - Month view? easier way to do forward todos
 - Connect to calendar completely? and just switch task type into todo?
+- Button in caledar day to go to todos page for that day
 
 ---
 
