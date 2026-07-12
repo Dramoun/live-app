@@ -1,6 +1,7 @@
 package com.example.humanmaintenance.ui.map
 
 import com.example.humanmaintenance.ui.components.AppIconType
+import java.time.LocalDate
 import java.util.UUID
 
 enum class Category(val label: String) {
@@ -28,5 +29,6 @@ data class FinanceItemData(
   val priority: Priority,
   val recurrence: Recurrence,
   val amount: Number,
-  val id: String = UUID.randomUUID().toString()
+  val id: String = UUID.randomUUID().toString(),
+  val initialDate: LocalDate
 )

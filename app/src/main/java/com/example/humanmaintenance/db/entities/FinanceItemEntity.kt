@@ -11,5 +11,6 @@ data class FinanceItemEntity(
   val category: String,
   val priority: String,
   val recurrence: String,
-  val amount: Long
+  val amount: Long,
+  val initialDate: String,
 )

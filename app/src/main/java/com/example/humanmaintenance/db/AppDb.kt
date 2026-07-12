@@ -15,7 +15,7 @@ import com.example.humanmaintenance.db.entities.TodoItemEntity
     FinanceItemEntity::class,
     TodoItemEntity::class
              ],
-  version = 3,
+  version = 4,
   exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

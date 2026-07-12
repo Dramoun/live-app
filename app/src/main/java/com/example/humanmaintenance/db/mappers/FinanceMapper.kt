@@ -23,7 +23,8 @@ fun FinanceItemData.toEntity(): FinanceItemEntity {
     priority = priority.name,
     recurrence = recurrence.name,
     amount = amount.toLong(),
-    icon = icon.name
+    icon = icon.name,
+    initialDate = initialDate.toString(),
   )
 }
 
@@ -36,6 +37,7 @@ fun FinanceItemEntity.toData(): FinanceItemData {
     priority = Priority.valueOf(priority),
     recurrence = Recurrence.valueOf(recurrence),
     amount = amount.toInt(),
-    icon = AppIconType.valueOf(icon)
+    icon = AppIconType.valueOf(icon),
+    initialDate = LocalDate.parse(initialDate),
   )
 }
