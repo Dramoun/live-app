@@ -20,9 +20,9 @@ import java.time.temporal.TemporalAdjusters
 
 @Composable
 fun DayTitle(
+  modifier: Modifier = Modifier,
   date: LocalDate,
-  onDateChange: (LocalDate) -> Unit = {},
-  modifier: Modifier = Modifier
+  onDateChange: (LocalDate) -> Unit = {}
 ) {
   val dateFormatter = DateTimeFormatter.ofPattern("d MMM (M) yyyy")
   val dayFormatter = DateTimeFormatter.ofPattern("EEEE")
@@ -58,7 +58,7 @@ fun DayTitle(
         )
 
         Text(
-          text = "$dayNumber",
+          text = " ($dayNumber)",
           color = AppColors.TextSecondary
         )
       }

@@ -10,6 +10,7 @@ import java.time.LocalDate
 
 @Composable
 fun MainScreen(
+  modifier: Modifier = Modifier,
   calendarItems: List<CalendarItemData>,
   financeItems: List<FinanceItemData>,
   todoItems: List<TodoItemData>,
@@ -21,7 +22,6 @@ fun MainScreen(
   onTodoItemClick: (TodoItemData) -> Unit = {},
   onPushTodoItem: (id: String) -> Unit = {},
   onSwitchTodoComplete: (id: String) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   when (currentPage) {
     AppPage.CALENDAR ->
@@ -34,7 +34,9 @@ fun MainScreen(
 
     AppPage.FINANCE_ITEMS ->
       FinanceItemsPage(
-        items = financeItems,
+        date = date,
+        financeItems = financeItems,
+        onDateChange = onDateChange,
         onItemClick = onFinanceItemClick,
         modifier = modifier
       )

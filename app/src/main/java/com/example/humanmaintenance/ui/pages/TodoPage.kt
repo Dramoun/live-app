@@ -2,8 +2,10 @@ package com.example.humanmaintenance.ui.pages
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,14 +20,15 @@ import java.time.LocalDate
 
 @Composable
 fun TodoPage(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
   todoItems: List<TodoItemData> = emptyList(),
   onItemClick: (TodoItemData) -> Unit = {},
   onPushItem: (id: String) -> Unit = {},
-  onSwitchComplete: (id: String) -> Unit = {},
-  modifier: Modifier = Modifier
+  onSwitchComplete: (id: String) -> Unit = {}
 ) {
+  // TODO: filtering can be done  off component for all pages like this
   val todayItems = sortedTodoItems(
     todoItems.filter { it.date == date }
   )
@@ -56,11 +59,11 @@ fun TodoPage(
 
 @Composable
 fun TodoItemsLayer(
+  modifier: Modifier = Modifier,
   items: List<TodoItemData>,
   pushItem: (id: String) -> Unit,
   switchComplete: (id: String) -> Unit,
   onItemClick: (TodoItemData) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   Column(
     modifier = modifier,

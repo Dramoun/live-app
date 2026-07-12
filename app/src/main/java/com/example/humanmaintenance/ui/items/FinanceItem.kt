@@ -23,13 +23,13 @@ import com.example.humanmaintenance.ui.theme.AppColors
 
 @Composable
 fun FinanceItem(
+  modifier: Modifier = Modifier,
   header: String,
   icon: IconStyle,
   category: Category,
   priority: Priority,
   recurrence: Recurrence,
-  amount: Number,
-  modifier: Modifier = Modifier
+  amount: Number
 ) {
   Row(
     modifier = modifier

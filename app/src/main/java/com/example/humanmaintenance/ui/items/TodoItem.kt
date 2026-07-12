@@ -33,6 +33,7 @@ import com.example.humanmaintenance.ui.map.priorityDisplayLabel
 
 @Composable
 fun TodoItem(
+  modifier: Modifier = Modifier,
   data: TodoItemData,
   pushItem: (id: String) -> Unit,
   switchComplete: (id: String) -> Unit,
@@ -49,7 +50,7 @@ fun TodoItem(
   val rightShape = RoundedCornerShape(topEnd = cornerRadius, bottomEnd = cornerRadius)
 
   Row(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .height(IntrinsicSize.Min)
       .clickable(onClick = onClick)

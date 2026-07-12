@@ -26,6 +26,7 @@ fun AddSheet(
     AppPage.FINANCE_ITEMS -> {
       AddFinanceItemOverlay(
         updateItem = updateFinanceItem,
+        date = date,
         onDismiss = onDismiss,
         onDelete = onFinanceDelete,
         onAdd = onAddFinance

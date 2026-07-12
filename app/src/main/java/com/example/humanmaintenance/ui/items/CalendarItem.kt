@@ -27,13 +27,13 @@ import com.example.humanmaintenance.ui.theme.AppColors
 
 @Composable
 fun CalendarItem(
+  modifier: Modifier = Modifier,
   item: CalendarItemData,
   hourHeight: Dp,
   startFraction: Float,
   durationHours: Float,
   onItemClick: (CalendarItemData) -> Unit = {},
   gutterWidth: Dp,
-  modifier: Modifier = Modifier
 ) {
   Box(
     modifier = modifier
@@ -52,7 +52,7 @@ fun CalendarItem(
     ) {
       AppIcon(
         style = item.icon.toStyle(),
-        size = 20.dp,
+        size = 35.dp,
         hasBorder = false
       )
 

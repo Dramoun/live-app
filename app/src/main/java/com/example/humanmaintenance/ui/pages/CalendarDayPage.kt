@@ -25,11 +25,11 @@ private val GutterWidth = 56.dp
 
 @Composable
 fun CalendarDayPage(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
   calendarItems: List<CalendarItemData> = emptyList(),
-  onItemClick: (CalendarItemData) -> Unit = {},
-  modifier: Modifier = Modifier
+  onItemClick: (CalendarItemData) -> Unit = {}
 ) {
   val hourHeight = 120
 
@@ -45,21 +45,16 @@ fun CalendarDayPage(
       modifier = Modifier.clickable { onDateChange(LocalDate.now())}
     )
 
+    val scrollState = rememberScrollState()
+
     Box(
       modifier = Modifier
+        .verticalScroll(scrollState)
+        .height((24 * hourHeight).dp)
         .fillMaxSize()
     ) {
-      val scrollState = rememberScrollState()
-
-      Box(
-        modifier = Modifier
-          .verticalScroll(scrollState)
-          .height((24 * hourHeight).dp)
-          .fillMaxSize()
-      ) {
-        TimeBackground(hourHeight.dp)
-        EventLayer(items = dayItems, hourHeight = hourHeight.dp, onItemClick = onItemClick)
-      }
+      TimeBackground(hourHeight.dp)
+      EventLayer(items = dayItems, hourHeight = hourHeight.dp, onItemClick = onItemClick)
     }
   }
 }
@@ -89,10 +84,10 @@ fun TimeBackground(hourHeight: Dp) {
 
 @Composable
 fun EventLayer(
+  modifier: Modifier = Modifier,
   items: List<CalendarItemData>,
   hourHeight: Dp,
   onItemClick: (CalendarItemData) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   Box(
     modifier = modifier
