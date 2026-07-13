@@ -111,7 +111,7 @@ Using different signing keys causes Android to treat builds as different applica
 A simple approach is to keep the following files outside version control and copy them to each development machine:
 
 ```text
-keys/shared.keystore
+app/keys/shared.keystore
 keystore.properties
 ```
 
