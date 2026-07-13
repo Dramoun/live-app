@@ -28,6 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import java.time.LocalTime
 
+
+// TODO: scroll wheel like time selection feature sounds cool and
+//  complex enough to be work creating my own instead of getting somewhere outside
 @Composable
 fun TimeInput(
   label: String,

@@ -2,15 +2,11 @@ package com.example.humanmaintenance.ui.overlays
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,8 +27,6 @@ import com.example.humanmaintenance.ui.components.ChipSelectorMulti
 import com.example.humanmaintenance.ui.components.ColorPicker
 import com.example.humanmaintenance.ui.components.IconPicker
 import com.example.humanmaintenance.ui.components.TimeInput
-import com.example.humanmaintenance.ui.map.Category
-import com.example.humanmaintenance.ui.map.FinanceItemData
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -48,7 +42,7 @@ fun AddCalendarItemOverlay(
   var title by remember { mutableStateOf(updateItem?.title ?: "") }
   var description by remember { mutableStateOf(updateItem?.description ?:"") }
   var itemDate by remember { mutableStateOf(updateItem?.date ?: date) }
-  var startTime by remember { mutableStateOf(updateItem?.start ?:LocalTime.now())}
+  var startTime by remember { mutableStateOf(updateItem?.start ?: LocalTime.now())}
   var endTime by remember { mutableStateOf<LocalTime?>(updateItem?.end)}
 
   var type by remember { mutableStateOf(updateItem?.type ?: Type.EVENT) }

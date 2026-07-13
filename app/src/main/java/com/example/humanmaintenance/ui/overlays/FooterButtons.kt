@@ -1,7 +1,5 @@
 package com.example.humanmaintenance.ui.overlays
 
-import android.R
-import android.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
