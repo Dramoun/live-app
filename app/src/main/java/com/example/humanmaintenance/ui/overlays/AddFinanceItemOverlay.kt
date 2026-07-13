@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.humanmaintenance.ui.components.AppIconType
 import com.example.humanmaintenance.ui.components.ChipSelector
+import com.example.humanmaintenance.ui.components.DateRangeField
 import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.Priority
@@ -40,7 +41,8 @@ fun AddFinanceItemOverlay(
   var title by remember { mutableStateOf(updateItem?.header ?:"") }
   var amount by remember { mutableStateOf(updateItem?.amount?.toString() ?: "") }
   // TODO: gotta add selection of date
-  var itemDate by remember { mutableStateOf(updateItem?.initialDate ?: date)}
+  var initialDate by remember { mutableStateOf(updateItem?.initialDate ?: date)}
+  var endDate by remember { mutableStateOf(updateItem?.endDate)}
 
   var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
@@ -96,6 +98,15 @@ fun AddFinanceItemOverlay(
           onSelected = { recurrence = it },
           text = { it.label }
         )
+
+        DateRangeField(
+          startDate = initialDate,
+          endDate = endDate,
+          onRangeChange = { start, end ->
+            initialDate = start
+            endDate = end
+          }
+        )
       }
 
       OverLayFooter(
@@ -110,7 +121,8 @@ fun AddFinanceItemOverlay(
           recurrence = recurrence,
           amount = amount.toIntOrNull() ?: 0,
           id = updateItem?.id ?: UUID.randomUUID().toString(),
-          initialDate = itemDate
+          initialDate = initialDate,
+          endDate = endDate
         ),
         itemExists = updateItem != null,
         onDismiss = onDismiss,
