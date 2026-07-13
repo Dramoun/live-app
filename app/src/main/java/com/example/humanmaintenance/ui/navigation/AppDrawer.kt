@@ -2,6 +2,7 @@ package com.example.humanmaintenance.ui.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -12,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.map.AppPage
+import com.example.humanmaintenance.ui.theme.AppColors
 import kotlinx.coroutines.launch
 
 @Composable
@@ -30,22 +33,44 @@ fun AppDrawer(
   val drawerState = rememberDrawerState(DrawerValue.Closed)
   val scope = rememberCoroutineScope()
 
+  val itemColors = NavigationDrawerItemDefaults.colors(
+    selectedContainerColor = AppColors.SurfaceVariant,
+    selectedTextColor = AppColors.TextPrimary,
+    unselectedContainerColor = AppColors.Surface,
+    unselectedTextColor = AppColors.TextSecondary,
+  )
+
   ModalNavigationDrawer(
     drawerState = drawerState,
     drawerContent = {
-      ModalDrawerSheet {
+      ModalDrawerSheet(
+        modifier = Modifier.fillMaxWidth(0.7f),
+        drawerContainerColor = AppColors.Surface,
+        drawerContentColor = AppColors.TextPrimary,
+      ) {
         Column(
           modifier = Modifier.padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
         ) {
           Spacer(Modifier.height(12.dp))
-          Text("Pages", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge)
-          HorizontalDivider()
+          Text(
+            "Pages",
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.titleLarge,
+            color = AppColors.TextPrimary
+          )
+          HorizontalDivider(color = AppColors.SurfaceVariant)
 
-          Text("Finance", modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.titleMedium)
+          Text(
+            "Finance",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = AppColors.TextPrimary
+          )
           NavigationDrawerItem(
             label = { Text("Daily") },
             selected = currentPage == AppPage.FINANCE_ITEMS,
+            colors = itemColors,
             onClick = {
               onPageSelected(AppPage.FINANCE_ITEMS)
               scope.launch {
@@ -54,22 +79,45 @@ fun AppDrawer(
             }
           )
 
-          Text("Calendar", modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.titleMedium)
+          Text(
+            "Calendar",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = AppColors.TextPrimary
+          )
           NavigationDrawerItem(
             label = { Text("Daily") },
-            selected = currentPage == AppPage.CALENDAR,
+            selected = currentPage == AppPage.CALENDAR_DAY,
+            colors = itemColors,
             onClick = {
-              onPageSelected(AppPage.CALENDAR)
+              onPageSelected(AppPage.CALENDAR_DAY)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+          NavigationDrawerItem(
+            label = { Text("Month") },
+            selected = currentPage == AppPage.CALENDAR_MONTH,
+            colors = itemColors,
+            onClick = {
+              onPageSelected(AppPage.CALENDAR_MONTH)
               scope.launch {
                 drawerState.close()
               }
             }
           )
 
-          Text("Other", modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.titleMedium)
+          Text(
+            "Other",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = AppColors.TextPrimary
+          )
           NavigationDrawerItem(
             label = { Text("Todo") },
             selected = currentPage == AppPage.TODO,
+            colors = itemColors,
             onClick = {
               onPageSelected(AppPage.TODO)
               scope.launch {

@@ -22,15 +22,26 @@ fun MainScreen(
   onTodoItemClick: (TodoItemData) -> Unit = {},
   onPushTodoItem: (id: String) -> Unit = {},
   onSwitchTodoComplete: (id: String) -> Unit = {},
+  onPageSelected: (AppPage) -> Unit,
 ) {
   when (currentPage) {
-    AppPage.CALENDAR ->
+    AppPage.CALENDAR_DAY ->
       CalendarDayPage(
         date = date,
         onDateChange = onDateChange,
         calendarItems = calendarItems,
         onItemClick = onCalendarItemClick,
-        modifier = modifier)
+        modifier = modifier
+      )
+
+    AppPage.CALENDAR_MONTH ->
+      CalendarMonthPage(
+        date = date,
+        onDateChange = onDateChange,
+        calendarItems = calendarItems,
+        onPageSelected = onPageSelected,
+        modifier = modifier
+      )
 
     AppPage.FINANCE_ITEMS ->
       FinanceItemsPage(

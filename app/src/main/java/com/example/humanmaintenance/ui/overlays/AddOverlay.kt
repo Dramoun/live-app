@@ -33,7 +33,9 @@ fun AddSheet(
       )
     }
 
-    AppPage.CALENDAR -> {
+    AppPage.CALENDAR_MONTH -> null
+
+    AppPage.CALENDAR_DAY -> {
       AddCalendarItemOverlay(
         updateItem = updateCalendarItem,
         date = date,

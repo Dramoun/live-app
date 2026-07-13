@@ -153,8 +153,8 @@ fun MonthTitle(
   onDateChange: (LocalDate) -> Unit = {},
   modifier: Modifier = Modifier
 ) {
-  val monthLong = date.format(DateTimeFormatter.ofPattern("MMM"))
-  val secondaryDate = date.format(DateTimeFormatter.ofPattern("d M yyyy"))
+  val monthLong = date.format(DateTimeFormatter.ofPattern("MMMM"))
+  val secondaryDate = date.format(DateTimeFormatter.ofPattern("dd MM yyyy"))
 
   Row(
     modifier = modifier.fillMaxWidth(),

@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,6 +41,7 @@ import com.example.humanmaintenance.db.viewmodels.TodoViewModel
 import com.example.humanmaintenance.db.viewmodels.TodoViewModelFactory
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.pages.MainScreen
+import com.example.humanmaintenance.ui.theme.AppColors
 import java.time.LocalDate
 
 
@@ -107,6 +110,8 @@ fun App(
     }
   ) { onMenuClick ->
     Scaffold(
+      containerColor = AppColors.Background,
+      contentColor = AppColors.TextPrimary,
       floatingActionButton = {
         AddFloatingActionButton(
           onClick = {
@@ -149,6 +154,9 @@ fun App(
         },
         onSwitchTodoComplete = { id ->
           todoViewModel.toggleComplete(id)
+        },
+        onPageSelected = { page ->
+          currentPage = page
         },
         modifier = Modifier.padding(innerPadding)
       )

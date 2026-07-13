@@ -1,5 +1,6 @@
 package com.example.humanmaintenance.ui.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.DayTitle
 import com.example.humanmaintenance.ui.items.CalendarItem
 import com.example.humanmaintenance.ui.map.CalendarItemData
+import com.example.humanmaintenance.ui.theme.AppColors
 import java.time.LocalDate
 
 private val GutterWidth = 56.dp
@@ -39,6 +41,7 @@ fun CalendarDayPage(
     modifier = modifier.fillMaxSize().padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
+    // TODO: on click should be handled in individual components
     DayTitle(
       date = date,
       onDateChange = onDateChange,
