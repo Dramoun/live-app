@@ -2,12 +2,11 @@
 
 ## Current
 
-- Finance items need also endDate to be stored for recurring items, so we know when to stop displaying them
 - Calendar Month Page
+- Finance Month/Week Page (existing features just need to be put together)
 - Settings page missing
 - IconPicker needs own set of icons?
-- filtering for different date ranged and having it cached
-- Add date selection component for general use and date selection when adding or updating
+- filtering for different date ranged and having it cached ?
 
 ---
 
