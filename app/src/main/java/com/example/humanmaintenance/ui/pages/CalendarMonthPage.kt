@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.humanmaintenance.ui.components.MonthTitle
 import com.example.humanmaintenance.ui.items.CalendarCell
+import com.example.humanmaintenance.ui.items.CalendarMonthSummaryItem
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.theme.AppColors
@@ -122,6 +122,19 @@ fun CalendarMonthPage(
         }
       }
     }
+
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .clip(RoundedCornerShape(12.dp))
+        .background(AppColors.Surface)
+    ) {
+      CalendarMonthSummaryItem(
+        date = date,
+        calendarItems = calendarItems
+      )
+    }
+
 
     //TODO: maybe add summary display, depends if we have space!
   }

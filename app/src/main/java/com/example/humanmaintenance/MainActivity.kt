@@ -96,7 +96,7 @@ fun App(
   //  should then be much more manageble to look up data
   val calendarItems by calendarViewModel.calendarItems.collectAsState()
   val todoItems by todoViewModel.todoItems.collectAsState()
-  var currentPage by remember { mutableStateOf(AppPage.FINANCE_ITEMS) }
+  var currentPage by remember { mutableStateOf(AppPage.CALENDAR_MONTH) }
   var showAddSheet by remember { mutableStateOf(false) }
   var editingFinanceItem by remember { mutableStateOf<FinanceItemData?>(null) }
   var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
