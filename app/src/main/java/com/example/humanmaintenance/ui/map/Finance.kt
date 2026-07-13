@@ -30,5 +30,6 @@ data class FinanceItemData(
   val recurrence: Recurrence,
   val amount: Number,
   val id: String = UUID.randomUUID().toString(),
-  val initialDate: LocalDate
+  val initialDate: LocalDate,
+  val endDate: LocalDate? = null
 )

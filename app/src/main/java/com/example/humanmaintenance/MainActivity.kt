@@ -19,6 +19,7 @@ import com.example.humanmaintenance.db.AppDatabase
 import com.example.humanmaintenance.db.migrations.MIGRATION_1_2
 import com.example.humanmaintenance.db.migrations.MIGRATION_2_3
 import com.example.humanmaintenance.db.migrations.MIGRATION_3_4
+import com.example.humanmaintenance.db.migrations.MIGRATION_4_5
 import com.example.humanmaintenance.db.repositories.CalendarRepository
 import com.example.humanmaintenance.db.repositories.FinanceRepository
 import com.example.humanmaintenance.db.repositories.TodoRepository
@@ -53,6 +54,7 @@ class MainActivity : ComponentActivity() {
     ).addMigrations(MIGRATION_1_2)
       .addMigrations(MIGRATION_2_3)
       .addMigrations(MIGRATION_3_4)
+      .addMigrations(MIGRATION_4_5)
       .build()
 
     val calendarRepository = CalendarRepository(db.calendarDao())
@@ -107,7 +109,6 @@ fun App(
     Scaffold(
       floatingActionButton = {
         AddFloatingActionButton(
-          currentPage = currentPage,
           onClick = {
             editingCalendarItem = null
             editingTodoItem = null

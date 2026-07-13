@@ -13,4 +13,5 @@ data class FinanceItemEntity(
   val recurrence: String,
   val amount: Long,
   val initialDate: String,
+  val endDate: String?
 )

@@ -25,6 +25,7 @@ fun FinanceItemData.toEntity(): FinanceItemEntity {
     amount = amount.toLong(),
     icon = icon.name,
     initialDate = initialDate.toString(),
+    endDate = endDate?.toString()
   )
 }
 
@@ -39,5 +40,6 @@ fun FinanceItemEntity.toData(): FinanceItemData {
     amount = amount.toInt(),
     icon = AppIconType.valueOf(icon),
     initialDate = LocalDate.parse(initialDate),
+    endDate = endDate?.let { LocalDate.parse(it) },
   )
 }
