@@ -130,7 +130,7 @@ fun SummaryBox(
         .padding(vertical = 6.dp),
       verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-      Text(text = "Free days", color = AppColors.TextSecondary)
+      Text(text = "Active days", color = AppColors.TextSecondary)
 
       PercentageBar(
         percentage = (freeDays.toFloat() / totalDays.toFloat())
@@ -143,7 +143,8 @@ fun SummaryBox(
         .padding(vertical = 6.dp),
       verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-
+      Text(text = "Free days", color = AppColors.TextSecondary)
+      Text(text = "$freeDays of $totalDays", color = AppColors.TextSecondary)
     }
 
     Column(
@@ -152,7 +153,8 @@ fun SummaryBox(
         .padding(vertical = 6.dp),
       verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-
+      Text(text = "Total events", color = AppColors.TextSecondary)
+      Text(text = totalEvents.toString(), color = AppColors.TextSecondary)
     }
   }
 }

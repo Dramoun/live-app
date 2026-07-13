@@ -40,7 +40,6 @@ fun AddFinanceItemOverlay(
 ) {
   var title by remember { mutableStateOf(updateItem?.header ?:"") }
   var amount by remember { mutableStateOf(updateItem?.amount?.toString() ?: "") }
-  // TODO: gotta add selection of date
   var initialDate by remember { mutableStateOf(updateItem?.initialDate ?: date)}
   var endDate by remember { mutableStateOf(updateItem?.endDate)}
 

@@ -134,8 +134,5 @@ fun CalendarMonthPage(
         calendarItems = calendarItems
       )
     }
-
-
-    //TODO: maybe add summary display, depends if we have space!
   }
 }
