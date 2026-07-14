@@ -3,6 +3,7 @@ package com.example.humanmaintenance.ui.items
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,9 +50,10 @@ fun CalendarItem(
   ) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(6.dp)
+      horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
       AppIcon(
+        modifier = Modifier.padding(5.dp),
         style = item.icon.toStyle(),
         size = 35.dp,
         hasBorder = false

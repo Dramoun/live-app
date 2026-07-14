@@ -23,13 +23,13 @@ fun AppTopBar(
     },
     navigationIcon = {
       IconButton(onClick = onMenuClick) {
-        AppIcon(AppIcons.Menu())
+        AppIcon(style = AppIcons.Menu())
       }
     },
     // TODO: no feature currently here but button is ready
     actions = {
       IconButton(onClick = { }) {
-        AppIcon(AppIcons.More())
+        AppIcon(style = AppIcons.More())
       }
     },
     colors = TopAppBarDefaults.topAppBarColors(

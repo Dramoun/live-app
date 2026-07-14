@@ -25,12 +25,13 @@ data class IconStyle(
 
 @Composable
 fun AppIcon(
+  modifier: Modifier = Modifier,
   style: IconStyle,
   size: Dp = 48.dp,
   hasBorder: Boolean = true
 ) {
   Box(
-    modifier = Modifier
+    modifier = modifier
       .size(size)
       .background(color = style.background, shape = CircleShape)
       .border(width = if (hasBorder) 1.5.dp else 0.dp, color = style.color.copy(alpha = 0.4f), shape = CircleShape),
