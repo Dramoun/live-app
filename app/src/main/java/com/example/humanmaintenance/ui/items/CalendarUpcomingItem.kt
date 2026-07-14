@@ -19,7 +19,8 @@ import com.example.humanmaintenance.ui.theme.AppColors
 import java.time.format.DateTimeFormatter
 
 
-private val upcomingDateFormatter = DateTimeFormatter.ofPattern("d MMM")
+private val upcomingDateFormatter = DateTimeFormatter.ofPattern("d MMMM")
+private val upcomingTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 @Composable
 fun CalendarUpcomingItem(
   modifier: Modifier = Modifier,
@@ -51,10 +52,22 @@ fun CalendarUpcomingItem(
       )
     }
 
-    Text(
-      text = item.date.format(upcomingDateFormatter),
-      color = AppColors.TextSecondary,
-      style = MaterialTheme.typography.labelSmall,
-    )
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+      Text(
+        text = item.date.format(upcomingDateFormatter),
+        color = AppColors.TextSecondary,
+        style = MaterialTheme.typography.labelSmall,
+      )
+
+      Text(
+        text = item.start.format(upcomingTimeFormatter),
+        color = AppColors.TextSecondary,
+        style = MaterialTheme.typography.labelSmall,
+      )
+    }
+
   }
 }
