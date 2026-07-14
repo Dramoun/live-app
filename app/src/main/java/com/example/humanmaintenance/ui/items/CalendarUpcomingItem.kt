@@ -63,11 +63,16 @@ fun CalendarUpcomingItem(
       )
 
       Text(
+        text = item.type.label,
+        color = AppColors.TextSecondary,
+        style = MaterialTheme.typography.labelSmall,
+      )
+
+      Text(
         text = item.start.format(upcomingTimeFormatter),
         color = AppColors.TextSecondary,
         style = MaterialTheme.typography.labelSmall,
       )
     }
-
   }
 }
