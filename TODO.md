@@ -3,6 +3,7 @@
 ## Current
 
 - Calendar Month Page
+- Add "create todo" for CalendarItem, which sends the user to todo page of previous day
 - Finance Month/Week Page (existing features just need to be put together)
 - Settings page missing
 - IconPicker needs own set of icons?

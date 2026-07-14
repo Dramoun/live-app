@@ -41,25 +41,28 @@ fun TimeInput(
   Column(
     verticalArrangement = Arrangement.spacedBy(4.dp)
   ) {
-    Text(label)
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+      Text(label)
 
-    if (!required) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
-        Checkbox(
-          checked = time == null,
-          onCheckedChange = { checked ->
-            if (checked) {
-              onTimeChange(null)
-            } else {
-              onTimeChange(LocalTime.now().withSecond(0).withNano(0))
+      if (!required) {
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+          Checkbox(
+            checked = time != null,
+            onCheckedChange = { checked ->
+              if (!checked) {
+                onTimeChange(null)
+              } else {
+                onTimeChange(LocalTime.now().withSecond(0).withNano(0))
+              }
             }
-          }
-        )
-
-        Text("No end time")
+          )
+        }
       }
     }
 
