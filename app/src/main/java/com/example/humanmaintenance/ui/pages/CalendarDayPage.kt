@@ -54,15 +54,16 @@ fun CalendarDayPage(
     val density = LocalDensity.current
     val hourHeightPx = with(density) { hourHeight.dp.toPx() }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(date) {
       val firstItem = dayItems.firstOrNull()
 
-      if (firstItem != null) {
-        val firstItemPos = (firstItem.start.hour + firstItem.start.minute / 60f ) * hourHeightPx
-        scrollState.animateScrollBy(firstItemPos)
+      val targetPx = if (firstItem != null) {
+        (firstItem.start.hour + firstItem.start.minute / 60f) * hourHeightPx
       } else {
-        scrollState.animateScrollBy((24 * hourHeightPx)/2)
+        (24 * hourHeightPx) / 2
       }
+
+      scrollState.animateScrollTo(targetPx.toInt())
     }
 
     Box(
