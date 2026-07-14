@@ -1,6 +1,7 @@
 package com.example.humanmaintenance.ui.items
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.PercentageBar
+import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.theme.AppColors
 import java.time.LocalDate
@@ -28,7 +29,9 @@ import java.time.LocalDate
 fun CalendarMonthSummaryItem(
   modifier: Modifier = Modifier,
   date: LocalDate,
-  calendarItems: List<CalendarItemData> = emptyList()
+  calendarItems: List<CalendarItemData> = emptyList(),
+  onPageSelected: (AppPage) -> Unit,
+  onDateChange: (LocalDate) -> Unit = {},
 ) {
   val monthItems = calendarItems.filter {
     it.date.year == date.year &&
@@ -75,7 +78,13 @@ fun CalendarMonthSummaryItem(
         )
       } else {
         upcomingEvents.forEachIndexed { index, item ->
-          CalendarUpcomingItem(item = item)
+          CalendarUpcomingItem(
+            modifier = Modifier.clickable {
+              onDateChange(item.date)
+              onPageSelected(AppPage.CALENDAR_DAY)
+            },
+            item = item
+          )
 
           if (index < upcomingEvents.lastIndex) {
             HorizontalDivider(

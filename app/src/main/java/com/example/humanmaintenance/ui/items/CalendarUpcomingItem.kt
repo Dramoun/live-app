@@ -20,8 +20,6 @@ import java.time.format.DateTimeFormatter
 
 
 private val upcomingDateFormatter = DateTimeFormatter.ofPattern("d MMM")
-
-//TODO: on item click, go to that day
 @Composable
 fun CalendarUpcomingItem(
   modifier: Modifier = Modifier,

@@ -131,7 +131,9 @@ fun CalendarMonthPage(
     ) {
       CalendarMonthSummaryItem(
         date = date,
-        calendarItems = calendarItems
+        calendarItems = calendarItems,
+        onPageSelected = onPageSelected,
+        onDateChange = onDateChange
       )
     }
   }
