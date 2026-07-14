@@ -1,7 +1,7 @@
 package com.example.humanmaintenance.ui.pages
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,16 +14,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.DayTitle
 import com.example.humanmaintenance.ui.items.CalendarItem
 import com.example.humanmaintenance.ui.map.CalendarItemData
-import com.example.humanmaintenance.ui.theme.AppColors
 import java.time.LocalDate
 
-private val GutterWidth = 56.dp
 
 @Composable
 fun CalendarDayPage(
@@ -35,13 +35,14 @@ fun CalendarDayPage(
 ) {
   val hourHeight = 120
 
-  val dayItems = calendarItems.filter { it.date == date }
+  val dayItems = calendarItems
+    .filter { it.date == date }
+    .sortedBy { it.start }
 
   Column(
     modifier = modifier.fillMaxSize().padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
-    // TODO: on click should be handled in individual components
     DayTitle(
       date = date,
       onDateChange = onDateChange,
@@ -50,10 +51,24 @@ fun CalendarDayPage(
 
     val scrollState = rememberScrollState()
 
+    val density = LocalDensity.current
+    val hourHeightPx = with(density) { hourHeight.dp.toPx() }
+
+    LaunchedEffect(Unit) {
+      val firstItem = dayItems.firstOrNull()
+
+      if (firstItem != null) {
+        val firstItemPos = (firstItem.start.hour + firstItem.start.minute / 60f ) * hourHeightPx
+        scrollState.animateScrollBy(firstItemPos)
+      } else {
+        scrollState.animateScrollBy((24 * hourHeightPx)/2)
+      }
+    }
+
     Box(
       modifier = Modifier
         .verticalScroll(scrollState)
-        .height((24 * hourHeight).dp)
+        .height((24 * hourHeight).dp) // 24 * 120 = 2880
         .fillMaxSize()
     ) {
       TimeBackground(hourHeight.dp)
@@ -108,7 +123,6 @@ fun EventLayer(
         startFraction = startFraction,
         durationHours = durationHours,
         onItemClick = onItemClick,
-        gutterWidth = GutterWidth
       )
     }
   }

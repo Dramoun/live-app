@@ -25,6 +25,8 @@ import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.theme.AppColors
 
+private val GutterWidth = 56.dp
+
 @Composable
 fun CalendarItem(
   modifier: Modifier = Modifier,
@@ -33,11 +35,10 @@ fun CalendarItem(
   startFraction: Float,
   durationHours: Float,
   onItemClick: (CalendarItemData) -> Unit = {},
-  gutterWidth: Dp,
 ) {
   Box(
     modifier = modifier
-      .padding(start = gutterWidth, end = 8.dp)
+      .padding(start = GutterWidth, end = 8.dp)
       .offset(y = hourHeight * startFraction)
       .fillMaxWidth()
       .height(hourHeight * durationHours)

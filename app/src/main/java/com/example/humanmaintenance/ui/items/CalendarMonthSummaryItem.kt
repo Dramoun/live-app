@@ -121,8 +121,6 @@ fun CalendarMonthSummaryItem(
   }
 }
 
-//TODO : add Active days X of Y
-//TODO : add Total events Z
 @Composable
 fun SummaryBox(
   modifier: Modifier = Modifier,
