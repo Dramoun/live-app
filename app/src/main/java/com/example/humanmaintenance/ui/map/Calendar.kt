@@ -8,23 +8,23 @@ import java.util.UUID
 
 
 enum class Type(val label: String) {
-  EVENT("Event"),
-  NOTE("Note"),
-  TASK("Task")
-}
-enum class Tag(val label: String) {
-  IMPORTANT("Important"),
   PERSONAL("Personal"),
-  PROJECT("Project"),
-  HEALTH("Health"),
   FAMILY("Family"),
   FRIENDS("Friends"),
+  WORK("Work"),
+  HEALTH("Health"),
+  TRAVEL("Travel"),
+  OTHER("Other")
+}
+
+enum class Tag(val label: String) {
+  IMPORTANT("Important"),
+  PROJECT("Project"),
 
   MEDICAL("Medical"),
   EXERCISE("Exercise"),
   SPORT("Sport"),
 
-  TRAVEL("Travel"),
   TRANSPORT("Transport"),
 
   BIRTHDAY("Birthday"),

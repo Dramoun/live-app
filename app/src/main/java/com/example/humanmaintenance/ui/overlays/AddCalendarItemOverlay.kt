@@ -45,7 +45,7 @@ fun AddCalendarItemOverlay(
   var startTime by remember { mutableStateOf(updateItem?.start ?: LocalTime.now())}
   var endTime by remember { mutableStateOf<LocalTime?>(updateItem?.end)}
 
-  var type by remember { mutableStateOf(updateItem?.type ?: Type.EVENT) }
+  var type by remember { mutableStateOf(updateItem?.type ?: Type.PERSONAL) }
   var tags by remember { mutableStateOf(updateItem?.tags ?: setOf(Tag.IMPORTANT)) }
   var color by remember { mutableStateOf(updateItem?.color ?: Color(0xFF2196F3))}
   var icon by remember { mutableStateOf(updateItem?.icon ?: AppIconType.OTHER) }
