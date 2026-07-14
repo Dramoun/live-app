@@ -53,7 +53,7 @@ fun <T> ChipSelectorMulti(
     Text(label)
 
     FlowRow (
-      horizontalArrangement = Arrangement.spacedBy(12.dp)
+      horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
       entries.forEach { item ->
         val isSelected = item in selected
