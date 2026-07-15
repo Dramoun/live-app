@@ -69,10 +69,34 @@ fun AppDrawer(
           )
           NavigationDrawerItem(
             label = { Text("Daily") },
-            selected = currentPage == AppPage.FINANCE_ITEMS,
+            selected = currentPage == AppPage.FINANCE_ITEMS_DAY,
             colors = itemColors,
             onClick = {
-              onPageSelected(AppPage.FINANCE_ITEMS)
+              onPageSelected(AppPage.FINANCE_ITEMS_DAY)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+
+          NavigationDrawerItem(
+            label = { Text("Weekly") },
+            selected = currentPage == AppPage.FINANCE_ITEMS_WEEK,
+            colors = itemColors,
+            onClick = {
+              onPageSelected(AppPage.FINANCE_ITEMS_WEEK)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+
+          NavigationDrawerItem(
+            label = { Text("Monthly") },
+            selected = currentPage == AppPage.FINANCE_ITEMS_MONTH,
+            colors = itemColors,
+            onClick = {
+              onPageSelected(AppPage.FINANCE_ITEMS_MONTH)
               scope.launch {
                 drawerState.close()
               }

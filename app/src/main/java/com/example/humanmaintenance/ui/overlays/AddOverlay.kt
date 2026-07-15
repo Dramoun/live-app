@@ -23,7 +23,10 @@ fun AddSheet(
   onTodoDelete: (TodoItemData) -> Unit
 ) {
   when (currentPage) {
-    AppPage.FINANCE_ITEMS -> {
+
+    AppPage.FINANCE_ITEMS_DAY,
+    AppPage.FINANCE_ITEMS_WEEK,
+    AppPage.FINANCE_ITEMS_MONTH-> {
       AddFinanceItemOverlay(
         updateItem = updateFinanceItem,
         date = date,
@@ -32,8 +35,6 @@ fun AddSheet(
         onAdd = onAddFinance
       )
     }
-
-    AppPage.CALENDAR_MONTH -> null
 
     AppPage.CALENDAR_DAY -> {
       AddCalendarItemOverlay(
@@ -44,6 +45,8 @@ fun AddSheet(
         onAdd = onAddCalendar
       )
     }
+
+    AppPage.CALENDAR_MONTH -> null
 
     AppPage.TODO -> {
       AddTodoItemOverlay(

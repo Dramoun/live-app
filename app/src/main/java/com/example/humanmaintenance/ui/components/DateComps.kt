@@ -82,9 +82,9 @@ fun DayTitle(
 
 @Composable
 fun WeekTitle(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   val monday = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
   val sunday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
@@ -121,7 +121,7 @@ fun WeekTitle(
         )
 
         Text(
-          text = " → ",
+          text = " => ",
           color = AppColors.TextSecondary
         )
 
@@ -149,12 +149,12 @@ fun WeekTitle(
 
 @Composable
 fun MonthTitle(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   val monthLong = date.format(DateTimeFormatter.ofPattern("MMMM"))
-  val secondaryDate = date.format(DateTimeFormatter.ofPattern("dd MM yyyy"))
+  val secondaryDate = date.format(DateTimeFormatter.ofPattern("MM yyyy"))
 
   Row(
     modifier = modifier.fillMaxWidth(),
@@ -186,9 +186,9 @@ fun MonthTitle(
 
 @Composable
 fun YearTitle(
+  modifier: Modifier = Modifier,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
-  modifier: Modifier = Modifier
 ) {
   val yearLong = date.format(DateTimeFormatter.ofPattern("yyyy"))
   val secondaryDate = date.format(DateTimeFormatter.ofPattern("d MMM (m)"))

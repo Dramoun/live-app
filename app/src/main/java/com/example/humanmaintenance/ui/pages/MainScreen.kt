@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.FinanceViewMode
 import com.example.humanmaintenance.ui.map.TodoItemData
 import java.time.LocalDate
 
@@ -43,14 +44,22 @@ fun MainScreen(
         modifier = modifier
       )
 
-    AppPage.FINANCE_ITEMS ->
+    AppPage.FINANCE_ITEMS_DAY,
+    AppPage.FINANCE_ITEMS_WEEK,
+    AppPage.FINANCE_ITEMS_MONTH -> {
       FinanceItemsPage(
         date = date,
         financeItems = financeItems,
         onDateChange = onDateChange,
         onItemClick = onFinanceItemClick,
+        viewMode = when (currentPage) {
+          AppPage.FINANCE_ITEMS_DAY -> FinanceViewMode.DAY
+          AppPage.FINANCE_ITEMS_WEEK -> FinanceViewMode.WEEK
+          AppPage.FINANCE_ITEMS_MONTH -> FinanceViewMode.MONTH
+        },
         modifier = modifier
       )
+    }
 
     AppPage.TODO ->
       TodoPage(

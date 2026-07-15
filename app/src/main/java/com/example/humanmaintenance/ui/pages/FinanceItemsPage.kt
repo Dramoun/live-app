@@ -12,41 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.DayTitle
+import com.example.humanmaintenance.ui.components.MonthTitle
+import com.example.humanmaintenance.ui.components.WeekTitle
+import com.example.humanmaintenance.ui.components.YearTitle
 import com.example.humanmaintenance.ui.items.FinanceItem
 import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.FinanceViewMode
+import java.time.DayOfWeek
 import java.time.LocalDate
 import kotlin.collections.forEach
 
 
-/** For more items then 50 like year or month views
- * import androidx.compose.foundation.lazy.LazyColumn
- * import androidx.compose.foundation.lazy.items
- *
- * LazyColumn(
- *     modifier = Modifier
- *         .weight(1f)
- *         .fillMaxWidth(),
- *     verticalArrangement = Arrangement.spacedBy(12.dp)
- * ) {
- *     items(
- *         items = dayItems,
- *         key = { it.id }   // if your FinanceItemData has a unique id
- *     ) { item ->
- *         FinanceItem(
- *             icon = item.icon.toStyle(),
- *             header = item.header,
- *             category = item.category,
- *             priority = item.priority,
- *             recurrence = item.recurrence,
- *             amount = item.amount,
- *             modifier = Modifier.clickable {
- *                 onItemClick(item)
- *             }
- *         )
- *     }
- * }
- */
 @Composable
 fun FinanceItemsPage(
   modifier: Modifier = Modifier,
@@ -54,8 +31,35 @@ fun FinanceItemsPage(
   onDateChange: (LocalDate) -> Unit = {},
   financeItems: List<FinanceItemData>,
   onItemClick: (FinanceItemData) -> Unit = {},
+  viewMode: FinanceViewMode
 ) {
-  val dayItems = financeItems.filter { it.initialDate == date }
+  val displayItems = when (viewMode) {
+    FinanceViewMode.DAY -> financeItems.filter {
+      it.overlaps(date, date)
+    }
+
+    FinanceViewMode.WEEK -> {
+      val start = date.with(DayOfWeek.MONDAY)
+      financeItems.filter {
+        it.overlaps(start, start.plusDays(6))
+      }
+    }
+
+    FinanceViewMode.MONTH -> {
+      val start = date.withDayOfMonth(1)
+      financeItems.filter {
+        it.overlaps(start, start.withDayOfMonth(start.lengthOfMonth()))
+      }
+    }
+
+    FinanceViewMode.YEAR -> {
+      val start = date.withDayOfYear(1)
+      financeItems.filter {
+        it.overlaps(start, start.withDayOfYear(start.lengthOfYear()))
+      }
+    }
+  }
+
 
   Column(
     modifier = modifier
@@ -63,11 +67,39 @@ fun FinanceItemsPage(
       .padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
-    DayTitle(
-      date = date,
-      onDateChange = onDateChange,
-      modifier = Modifier.clickable { onDateChange(LocalDate.now()) }
-    )
+    when (viewMode) {
+      FinanceViewMode.DAY -> {
+        DayTitle(
+          date = date,
+          onDateChange = onDateChange,
+          modifier = Modifier.clickable { onDateChange(LocalDate.now()) }
+        )
+      }
+
+      FinanceViewMode.WEEK -> {
+        WeekTitle(
+          date = date,
+          onDateChange = onDateChange,
+          modifier = Modifier.clickable { onDateChange(LocalDate.now()) }
+        )
+      }
+
+      FinanceViewMode.MONTH -> {
+        MonthTitle(
+          date = date,
+          onDateChange = onDateChange,
+          modifier = Modifier.clickable { onDateChange(LocalDate.now()) }
+        )
+      }
+
+      FinanceViewMode.YEAR -> {
+        YearTitle(
+          date = date,
+          onDateChange = onDateChange,
+          modifier = Modifier.clickable { onDateChange(LocalDate.now()) }
+        )
+      }
+    }
 
     Column(
       modifier = Modifier
@@ -76,7 +108,8 @@ fun FinanceItemsPage(
         .verticalScroll(rememberScrollState()),
       verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-      dayItems.forEach { item ->
+
+      displayItems.forEach { item ->
         FinanceItem(
           icon = item.icon.toStyle(),
           header = item.header,
@@ -89,4 +122,9 @@ fun FinanceItemsPage(
       }
     }
   }
+}
+
+fun FinanceItemData.overlaps(start: LocalDate, end: LocalDate): Boolean {
+  return initialDate <= end &&
+      (endDate == null || endDate >= start)
 }

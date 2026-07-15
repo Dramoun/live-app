@@ -22,6 +22,13 @@ enum class Recurrence(val label: String) {
   YEARLY("Yearly")
 }
 
+enum class FinanceViewMode {
+  DAY,
+  WEEK,
+  MONTH,
+  YEAR
+}
+
 data class FinanceItemData(
   val header: String,
   val icon: AppIconType,
