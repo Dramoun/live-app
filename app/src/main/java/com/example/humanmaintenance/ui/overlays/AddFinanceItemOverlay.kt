@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.humanmaintenance.ui.components.AppIconType
 import com.example.humanmaintenance.ui.components.ChipSelector
+import com.example.humanmaintenance.ui.components.DateField
 import com.example.humanmaintenance.ui.components.DateRangeField
 import com.example.humanmaintenance.ui.map.Category
 import com.example.humanmaintenance.ui.map.FinanceItemData
@@ -46,6 +47,10 @@ fun AddFinanceItemOverlay(
   var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
   var recurrence by remember { mutableStateOf(updateItem?.recurrence ?: Recurrence.MONTHLY) }
+
+  // derived: one-time items never have an end date, regardless of
+  // what's still sitting in `endDate` state from a previous selection
+  val effectiveEndDate = if (recurrence == Recurrence.ONE_TIME) initialDate else endDate
 
   Dialog(onDismissRequest = onDismiss) {
     Card {
@@ -98,14 +103,22 @@ fun AddFinanceItemOverlay(
           text = { it.label }
         )
 
-        DateRangeField(
-          startDate = initialDate,
-          endDate = endDate,
-          onRangeChange = { start, end ->
-            initialDate = start
-            endDate = end
-          }
-        )
+        if (recurrence == Recurrence.ONE_TIME) {
+          DateField(
+            label = "Date",
+            date = initialDate,
+            onDateChange = { initialDate = it }
+          )
+        } else {
+          DateRangeField(
+            startDate = initialDate,
+            endDate = effectiveEndDate,
+            onRangeChange = { start, end ->
+              initialDate = start
+              endDate = end
+            }
+          )
+        }
       }
 
       OverLayFooter(
@@ -121,7 +134,7 @@ fun AddFinanceItemOverlay(
           amount = amount.toIntOrNull() ?: 0,
           id = updateItem?.id ?: UUID.randomUUID().toString(),
           initialDate = initialDate,
-          endDate = endDate
+          endDate = effectiveEndDate
         ),
         itemExists = updateItem != null,
         onDismiss = onDismiss,
