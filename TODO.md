@@ -2,7 +2,6 @@
 
 ## Current
 
-- Calendar Month Page
 - Add "create todo" for CalendarItem, which sends the user to todo page of previous day
 - Time input needs a new component where time selection is a scroll wheel, without the use of keyboard
 - Finance Month/Week Page (existing features just need to be put together)
@@ -10,6 +9,10 @@
 - IconPicker needs own set of icons?
 - filtering for different date ranged and having it cached ?
 - Types and tags and similar enum classes should be saved in db for backward compatibility
+- Notes page
+- Todo text gets long sometimes, we need a max size
+- Upcoming summary filtering needs an updated
+- calendar month view could use a color switch, check it out
 ---
 
 ## Finance
