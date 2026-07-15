@@ -46,7 +46,7 @@ fun DateField(
   label: String,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit,
-  formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd Mm yyyy")
+  formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MM yyyy")
 ) {
   var showPicker by remember { mutableStateOf(false) }
 
