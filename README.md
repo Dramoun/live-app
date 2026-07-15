@@ -14,6 +14,7 @@ A daily planner for appointments, events, reminders, and other scheduled items.
 * Each day stores its own data independently
 * Create, edit, and view calendar items
 * Multiple categories, priorities, and visual color indicators
+* Month view with summaries
 
 ###  To-Do
 
@@ -33,21 +34,6 @@ A lightweight finance tracker focused on recurring personal finances.
 * Track income and expenses
 * Store recurring financial commitments
 * Local data only
-
-## Planned Features
-
-The finance module will expand into a personal cash-flow dashboard with:
-
-* Monthly income overview
-* Monthly expenses
-* Savings tracking
-* Available money calculation
-* Sustainability indicators
-* Spending analytics
-* Financial insights
-* Purchase affordability checks
-
-The To-Do and Calendar modules will continue to gain quality-of-life improvements such as smarter sorting, filtering, and additional productivity features.
 
 ## Design Goals
 
