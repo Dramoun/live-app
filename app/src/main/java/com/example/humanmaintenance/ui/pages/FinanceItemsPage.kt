@@ -19,10 +19,19 @@ import com.example.humanmaintenance.ui.items.FinanceItem
 import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.FinanceViewMode
+import com.example.humanmaintenance.ui.map.Recurrence
 import java.time.DayOfWeek
 import java.time.LocalDate
 import kotlin.collections.forEach
+import kotlin.coroutines.EmptyCoroutineContext.get
 
+private val Recurrence.sortRank: Int
+  get() = when (this) {
+    Recurrence.YEARLY -> 0
+    Recurrence.MONTHLY -> 1
+    Recurrence.WEEKLY -> 2
+    Recurrence.ONE_TIME -> 3
+  }
 
 @Composable
 fun FinanceItemsPage(
@@ -58,8 +67,7 @@ fun FinanceItemsPage(
         it.overlaps(start, start.withDayOfYear(start.lengthOfYear()))
       }
     }
-  }
-
+  }.sortedBy { it.recurrence.sortRank }
 
   Column(
     modifier = modifier

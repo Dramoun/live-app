@@ -48,8 +48,6 @@ fun AddFinanceItemOverlay(
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
   var recurrence by remember { mutableStateOf(updateItem?.recurrence ?: Recurrence.MONTHLY) }
 
-  // derived: one-time items never have an end date, regardless of
-  // what's still sitting in `endDate` state from a previous selection
   val effectiveEndDate = if (recurrence == Recurrence.ONE_TIME) initialDate else endDate
 
   Dialog(onDismissRequest = onDismiss) {
