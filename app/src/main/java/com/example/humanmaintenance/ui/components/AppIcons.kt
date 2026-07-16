@@ -61,6 +61,24 @@ enum class AppIconType {
   SUBSCRIPTIONS,
   SAVINGS,
   OTHER,
+  ALARM,
+  FAVORITE,
+  EXTENSION,
+  RECURRENCE_YEARLY,
+  RECURRENCE_MONTHLY,
+  RECURRENCE_WEEKLY,
+  RECURRENCE_ONCE,
+  DASHBOARD,
+  INSIGHTS,
+  ADD,
+  CLOSE,
+  SEARCH,
+  REFRESH,
+  DELETE,
+  ARROW_LEFT,
+  ARROW_RIGHT,
+  MENU,
+  MORE,
   PREVIOUS_DAY,
   NEXT_DAY
 }
@@ -77,11 +95,38 @@ fun AppIconType.toStyle(): IconStyle = when (this) {
   AppIconType.SUBSCRIPTIONS -> AppIcons.Subscriptions()
   AppIconType.SAVINGS -> AppIcons.Savings()
   AppIconType.OTHER -> AppIcons.Other()
+
+  AppIconType.ALARM -> AppIcons.Alarm()
+  AppIconType.FAVORITE -> AppIcons.Favorite()
+  AppIconType.EXTENSION -> AppIcons.Extension()
+
+  AppIconType.RECURRENCE_YEARLY -> AppIcons.RecurrenceYearly()
+  AppIconType.RECURRENCE_MONTHLY -> AppIcons.RecurrenceMonthly()
+  AppIconType.RECURRENCE_WEEKLY -> AppIcons.RecurrenceWeekly()
+  AppIconType.RECURRENCE_ONCE -> AppIcons.RecurrenceOnce()
+
+  AppIconType.DASHBOARD -> AppIcons.Dashboard()
+  AppIconType.INSIGHTS -> AppIcons.Insights()
+
+  AppIconType.ADD -> AppIcons.Add()
+  AppIconType.CLOSE -> AppIcons.Close()
+  AppIconType.SEARCH -> AppIcons.Search()
+  AppIconType.REFRESH -> AppIcons.Refresh()
+  AppIconType.DELETE -> AppIcons.Delete()
+
+  AppIconType.ARROW_LEFT -> AppIcons.ArrowLeft()
+  AppIconType.ARROW_RIGHT -> AppIcons.ArrowRight()
+
+  AppIconType.MENU -> AppIcons.Menu()
+  AppIconType.MORE -> AppIcons.More()
+
   AppIconType.PREVIOUS_DAY -> AppIcons.PreviousDay()
   AppIconType.NEXT_DAY -> AppIcons.NextDay()
 }
 
+// https://fonts.google.com/icons
 object AppIcons {
+  // ---- Financial / budget categories ----
   @Composable fun Income() = IconStyle(
     icon = painterResource(R.drawable.payments_24px),
     contentDescription = "Income",
@@ -142,6 +187,56 @@ object AppIcons {
     color = Color(0xFF888888),
     background = Color(0x26888888),
   )
+
+  // ---- New non-financial categories ----
+  @Composable fun Alarm() = IconStyle(
+    icon = painterResource(R.drawable.alarm_24px),
+    contentDescription = "Reminder",
+    color = Color(0xFFFBBF24),
+    background = Color(0x26FBBF24),
+  )
+  @Composable fun Favorite() = IconStyle(
+    icon = painterResource(R.drawable.favorite_24px),
+    contentDescription = "Favorite",
+    color = Color(0xFFFB7185),
+    background = Color(0x26FB7185),
+  )
+  @Composable fun Extension() = IconStyle(
+    icon = painterResource(R.drawable.extension_24px),
+    contentDescription = "Extension",
+    color = Color(0xFF2DD4BF),
+    background = Color(0x262DD4BF),
+  )
+
+  // ---- Recurrence set (shared color family so they read as one group) ----
+  // NOTE: assuming Y/M/W/O map to Yearly / Monthly / Weekly / Once — adjust
+  // contentDescription/names if these represent something else.
+  @Composable fun RecurrenceYearly() = IconStyle(
+    icon = painterResource(R.drawable.ic_letter_y),
+    contentDescription = "Yearly",
+    color = Color(0xFF818CF8),
+    background = Color(0x26818CF8),
+  )
+  @Composable fun RecurrenceMonthly() = IconStyle(
+    icon = painterResource(R.drawable.ic_letter_m),
+    contentDescription = "Monthly",
+    color = Color(0xFF818CF8),
+    background = Color(0x26818CF8),
+  )
+  @Composable fun RecurrenceWeekly() = IconStyle(
+    icon = painterResource(R.drawable.ic_letter_w),
+    contentDescription = "Weekly",
+    color = Color(0xFF818CF8),
+    background = Color(0x26818CF8),
+  )
+  @Composable fun RecurrenceOnce() = IconStyle(
+    icon = painterResource(R.drawable.ic_letter_o),
+    contentDescription = "Once",
+    color = Color(0xFF818CF8),
+    background = Color(0x26818CF8),
+  )
+
+  // ---- Dashboard / navigation ----
   @Composable fun Dashboard() = IconStyle(
     icon = painterResource(R.drawable.space_dashboard_24px),
     contentDescription = "Dashboard",
@@ -154,10 +249,54 @@ object AppIcons {
     color = Color(0xFFFFFFFF),
     background = Color(0x26FFFFFF),
   )
+
+  // ---- Pure UI actions (neutral, match app surface) ----
   @Composable
   fun Add() = IconStyle(
     icon = painterResource(R.drawable.add_24px),
     contentDescription = "Add",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun Close() = IconStyle(
+    icon = painterResource(R.drawable.close_24px),
+    contentDescription = "Close",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun Search() = IconStyle(
+    icon = painterResource(R.drawable.search_24px),
+    contentDescription = "Search",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun Refresh() = IconStyle(
+    icon = painterResource(R.drawable.refresh_24px),
+    contentDescription = "Refresh",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun Delete() = IconStyle(
+    icon = painterResource(R.drawable.delete_24px),
+    contentDescription = "Delete",
+    color = Color(0xFFF87171),
+    background = AppColors.Surface
+  )
+  @Composable
+  fun ArrowLeft() = IconStyle(
+    icon = painterResource(R.drawable.keyboard_arrow_left_24px),
+    contentDescription = "Previous",
+    color = AppColors.TextPrimary,
+    background = AppColors.Surface
+  )
+  @Composable
+  fun ArrowRight() = IconStyle(
+    icon = painterResource(R.drawable.keyboard_arrow_right_24px),
+    contentDescription = "Next",
     color = AppColors.TextPrimary,
     background = AppColors.Surface
   )

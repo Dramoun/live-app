@@ -1,5 +1,6 @@
 package com.example.humanmaintenance.ui.theme
 
+import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.compose.ui.graphics.Color
 
 object AppColors {
@@ -19,4 +20,9 @@ object AppColors {
   val Orange = Color(0xFFFB923C)
   val Purple = Color(0xFFC084FC)
   val Neutral = Color(0xFF888888)
+  val Success = Color(0xFF4ADE80)
+  val SuccessBackGround = Color(0x264ADE80)
+  val Error = Color(0xFFF87171)
+  val ErrorBackGround = Color(0x26F87171)
+
 }
