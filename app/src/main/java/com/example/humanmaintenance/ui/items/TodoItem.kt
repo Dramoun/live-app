@@ -30,6 +30,7 @@ import com.example.humanmaintenance.ui.components.AppIcons
 import com.example.humanmaintenance.ui.map.CompletedColor
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.map.priorityDisplayLabel
+import kotlin.math.abs
 
 @Composable
 fun TodoItem(
@@ -106,7 +107,8 @@ fun TodoItem(
           horizontalArrangement = Arrangement.SpaceBetween
         ) {
           Column {
-            Text(data.title)
+            // TODO: this feature could be a general feature
+            Text(text= if (data.title.length <= 20) data.title else data.title.dropLast(abs(20 - data.title.length)) + "...")
             Text(data.effort.label, color = data.effort.color)
           }
 
