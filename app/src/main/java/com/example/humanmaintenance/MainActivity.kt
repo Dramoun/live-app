@@ -22,8 +22,10 @@ import com.example.humanmaintenance.db.migrations.MIGRATION_1_2
 import com.example.humanmaintenance.db.migrations.MIGRATION_2_3
 import com.example.humanmaintenance.db.migrations.MIGRATION_3_4
 import com.example.humanmaintenance.db.migrations.MIGRATION_4_5
+import com.example.humanmaintenance.db.migrations.MIGRATION_5_6
 import com.example.humanmaintenance.db.repositories.CalendarRepository
 import com.example.humanmaintenance.db.repositories.FinanceRepository
+import com.example.humanmaintenance.db.repositories.NoteGroupRepository
 import com.example.humanmaintenance.db.repositories.TodoRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
 import com.example.humanmaintenance.ui.overlays.AddSheet
@@ -37,8 +39,11 @@ import com.example.humanmaintenance.db.viewmodels.CalendarViewModelFactory
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.db.viewmodels.FinanceViewModel
 import com.example.humanmaintenance.db.viewmodels.FinanceViewModelFactory
+import com.example.humanmaintenance.db.viewmodels.NoteGroupViewModel
+import com.example.humanmaintenance.db.viewmodels.NoteGroupViewModelFactory
 import com.example.humanmaintenance.db.viewmodels.TodoViewModel
 import com.example.humanmaintenance.db.viewmodels.TodoViewModelFactory
+import com.example.humanmaintenance.ui.map.NoteGroupData
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.pages.MainScreen
 import com.example.humanmaintenance.ui.theme.AppColors
@@ -58,11 +63,13 @@ class MainActivity : ComponentActivity() {
       .addMigrations(MIGRATION_2_3)
       .addMigrations(MIGRATION_3_4)
       .addMigrations(MIGRATION_4_5)
+      .addMigrations(MIGRATION_5_6)
       .build()
 
     val calendarRepository = CalendarRepository(db.calendarDao())
     val financeRepository = FinanceRepository(db.financeDao())
     val todoRepository = TodoRepository(db.todoDao())
+    val noteGroupRepository = NoteGroupRepository(db.noteGroupDao(), db.noteDao())
 
     setContent {
       HumanMaintenanceTheme {
@@ -75,10 +82,14 @@ class MainActivity : ComponentActivity() {
         val todoViewModel: TodoViewModel = viewModel(
           factory = TodoViewModelFactory(todoRepository)
         )
+        val noteGroupViewModel: NoteGroupViewModel = viewModel(
+          factory = NoteGroupViewModelFactory(noteGroupRepository)
+        )
         App(
           calendarViewModel = calendarViewModel,
           financeViewModel = financeViewModel,
-          todoViewModel = todoViewModel
+          todoViewModel = todoViewModel,
+          noteGroupViewModel = noteGroupViewModel
         )
       }
     }
@@ -89,11 +100,15 @@ class MainActivity : ComponentActivity() {
 fun App(
   calendarViewModel: CalendarViewModel,
   financeViewModel: FinanceViewModel,
-  todoViewModel: TodoViewModel
+  todoViewModel: TodoViewModel,
+  noteGroupViewModel: NoteGroupViewModel
+
 ) {
   val financeItems by financeViewModel.financeItems.collectAsState()
   // TODO: use this somehow to prepare filtered data per month
   //  should then be much more manageble to look up data
+  val noteGroups by noteGroupViewModel.noteGroups.collectAsState()
+  var editingNoteGroup by remember { mutableStateOf<NoteGroupData?>(null) }
   val calendarItems by calendarViewModel.calendarItems.collectAsState()
   val todoItems by todoViewModel.todoItems.collectAsState()
   var currentPage by remember { mutableStateOf(AppPage.CALENDAR_MONTH) }
@@ -117,6 +132,8 @@ fun App(
           onClick = {
             editingCalendarItem = null
             editingTodoItem = null
+            editingFinanceItem = null
+            editingNoteGroup = null
             showAddSheet = true
           }
         )
@@ -136,6 +153,15 @@ fun App(
         date = date,
         onDateChange = { newDate ->
           date = newDate
+        },
+        onAddNote = { groupId, note ->
+          noteGroupViewModel.addNote(groupId, note)
+        },
+        onUpdateNote = { groupId, note ->
+          noteGroupViewModel.updateNote(groupId, note)
+        },
+        onDeleteNote = { groupId, note ->
+          noteGroupViewModel.deleteNote(groupId, note)
         },
         onFinanceItemClick = { item ->
           editingFinanceItem = item
@@ -158,6 +184,11 @@ fun App(
         onPageSelected = { page ->
           currentPage = page
         },
+        noteGroups = noteGroups,
+        onNoteGroupClick = { item ->
+          editingNoteGroup = item
+          showAddSheet = true
+        },
         modifier = Modifier.padding(innerPadding)
       )
 
@@ -166,6 +197,7 @@ fun App(
           currentPage = currentPage,
           updateFinanceItem = editingFinanceItem,
           updateCalendarItem = editingCalendarItem,
+          updateNoteGroup = editingNoteGroup,
           updateTodoItem = editingTodoItem,
           date = date,
           onDismiss = {
@@ -173,6 +205,7 @@ fun App(
             editingFinanceItem = null
             editingCalendarItem = null
             editingTodoItem = null
+            editingNoteGroup = null
           },
           onAddFinance = { item: FinanceItemData ->
             financeViewModel.addItem(item)
@@ -203,7 +236,17 @@ fun App(
             todoViewModel.deleteItem(item)
             showAddSheet = false
             editingTodoItem = null
-          }
+          },
+          onAddNoteGroup = { item: NoteGroupData ->
+            noteGroupViewModel.addGroup(item)
+            showAddSheet = false
+            editingNoteGroup = null
+          },
+          onNoteGroupDelete = { item: NoteGroupData ->
+            noteGroupViewModel.deleteGroup(item)
+            showAddSheet = false
+            editingNoteGroup = null
+          },
         )
       }
     }

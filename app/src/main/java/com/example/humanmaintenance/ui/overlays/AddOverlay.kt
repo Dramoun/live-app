@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.NoteGroupData
 import com.example.humanmaintenance.ui.map.TodoItemData
 import java.time.LocalDate
 
@@ -12,6 +13,7 @@ fun AddSheet(
   currentPage: AppPage,
   updateFinanceItem: FinanceItemData? = null,
   updateCalendarItem: CalendarItemData? = null,
+  updateNoteGroup: NoteGroupData? = null,
   updateTodoItem: TodoItemData? = null,
   date: LocalDate = LocalDate.now(),
   onDismiss: () -> Unit,
@@ -20,7 +22,9 @@ fun AddSheet(
   onAddCalendar: (CalendarItemData) -> Unit,
   onCalendarDelete: (CalendarItemData) -> Unit,
   onAddTodo: (TodoItemData) -> Unit,
-  onTodoDelete: (TodoItemData) -> Unit
+  onTodoDelete: (TodoItemData) -> Unit,
+  onAddNoteGroup: (NoteGroupData) -> Unit,
+  onNoteGroupDelete: (NoteGroupData) -> Unit
 ) {
   when (currentPage) {
 
@@ -33,6 +37,15 @@ fun AddSheet(
         onDismiss = onDismiss,
         onDelete = onFinanceDelete,
         onAdd = onAddFinance
+      )
+    }
+
+    AppPage.NOTES -> {
+      AddNoteGroupOverlay(
+        updateItem = updateNoteGroup,
+        onDismiss = onDismiss,
+        onDelete = onNoteGroupDelete,
+        onAdd = onAddNoteGroup
       )
     }
 

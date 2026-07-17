@@ -6,6 +6,8 @@ import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.ui.map.CalendarItemData
 import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.map.FinanceViewMode
+import com.example.humanmaintenance.ui.map.NoteData
+import com.example.humanmaintenance.ui.map.NoteGroupData
 import com.example.humanmaintenance.ui.map.TodoItemData
 import java.time.LocalDate
 
@@ -15,14 +17,19 @@ fun MainScreen(
   calendarItems: List<CalendarItemData>,
   financeItems: List<FinanceItemData>,
   todoItems: List<TodoItemData>,
+  noteGroups: List<NoteGroupData>,
   currentPage: AppPage,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
   onFinanceItemClick: (FinanceItemData) -> Unit = {},
+  onNoteGroupClick: (NoteGroupData) -> Unit = {},
   onCalendarItemClick: (CalendarItemData) -> Unit = {},
   onTodoItemClick: (TodoItemData) -> Unit = {},
   onPushTodoItem: (id: String) -> Unit = {},
   onSwitchTodoComplete: (id: String) -> Unit = {},
+  onAddNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
+  onUpdateNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
+  onDeleteNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
   onPageSelected: (AppPage) -> Unit,
 ) {
   when (currentPage) {
@@ -41,6 +48,16 @@ fun MainScreen(
         onDateChange = onDateChange,
         calendarItems = calendarItems,
         onPageSelected = onPageSelected,
+        modifier = modifier
+      )
+
+    AppPage.NOTES ->
+      NotesPage(
+        noteGroups = noteGroups,
+        onGroupClick = onNoteGroupClick,
+        onAddNote = onAddNote,
+        onUpdateNote = onUpdateNote,
+        onDeleteNote = onDeleteNote,
         modifier = modifier
       )
 

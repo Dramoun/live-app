@@ -138,6 +138,19 @@ fun AppDrawer(
             style = MaterialTheme.typography.titleMedium,
             color = AppColors.TextPrimary
           )
+
+          NavigationDrawerItem(
+            label = { Text("Notes") },
+            selected = currentPage == AppPage.NOTES,
+            colors = itemColors,
+            onClick = {
+              onPageSelected(AppPage.NOTES)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+
           NavigationDrawerItem(
             label = { Text("Todo") },
             selected = currentPage == AppPage.TODO,
