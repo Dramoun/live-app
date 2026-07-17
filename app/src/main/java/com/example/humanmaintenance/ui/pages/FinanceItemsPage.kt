@@ -1,9 +1,7 @@
 package com.example.humanmaintenance.ui.pages
 
-import android.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.AppIconType
-import com.example.humanmaintenance.ui.components.AppIcons
 import com.example.humanmaintenance.ui.components.CircleCheckBox
 import com.example.humanmaintenance.ui.components.DayTitle
 import com.example.humanmaintenance.ui.components.MonthTitle
