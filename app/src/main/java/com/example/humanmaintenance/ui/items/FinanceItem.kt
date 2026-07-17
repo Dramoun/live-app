@@ -29,6 +29,7 @@ fun FinanceItem(
   category: Category,
   priority: Priority,
   recurrence: Recurrence,
+  pageAmountText: String,
   amount: Number
 ) {
   Row(
@@ -76,9 +77,20 @@ fun FinanceItem(
         )
       }
     }
-    Text(
-      text = amount.toString(),
-      color = AppColors.Income
-    )
+
+    Column(
+      horizontalAlignment = Alignment.End
+    ) {
+      Text(
+        text = amount.toString(),
+        color = AppColors.Income
+      )
+
+      Text(
+        text = pageAmountText,
+        color = AppColors.TextSecondary,
+        fontSize = 12.sp
+      )
+    }
   }
 }
