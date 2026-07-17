@@ -38,7 +38,7 @@ fun CalendarMonthSummaryItem(
         it.date.month == date.month
   }
 
-  val upcomingEvents = monthItems
+  val upcomingEvents = calendarItems
     .filter {it.date >= LocalDate.now() }
     .sortedBy { it.date }
     .take(3)
