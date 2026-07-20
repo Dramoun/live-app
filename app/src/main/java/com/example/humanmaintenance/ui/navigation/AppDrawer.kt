@@ -20,14 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.humanmaintenance.appPreprocess.EditingItem
 import com.example.humanmaintenance.ui.map.AppPage
+import com.example.humanmaintenance.ui.map.NoteGroupData
 import com.example.humanmaintenance.ui.theme.AppColors
 import kotlinx.coroutines.launch
 
 @Composable
 fun AppDrawer(
   currentPage: AppPage,
+  topThreeNotes: List<NoteGroupData>,
   onPageSelected: (AppPage) -> Unit,
+  onNoteGroupSelect: (groupId: String) -> Unit = {},
   content: @Composable (onMenuClick: () -> Unit) -> Unit
 ) {
   val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -131,6 +135,27 @@ fun AppDrawer(
               }
             }
           )
+
+          if (topThreeNotes.isNotEmpty()) {
+            Text(
+              "Recent Notes",
+              modifier = Modifier.padding(8.dp),
+              style = MaterialTheme.typography.titleMedium,
+              color = AppColors.TextPrimary
+            )
+
+            topThreeNotes.forEach { group ->
+              NavigationDrawerItem(
+                label = { Text(group.title) },
+                selected = false,
+                colors = itemColors,
+                onClick = {
+                  onNoteGroupSelect(group.id)
+                  scope.launch { drawerState.close() }
+                }
+              )
+            }
+          }
 
           Text(
             "Other",

@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.room.Room
@@ -66,7 +67,21 @@ fun App(vms: AppViewModels) {
   val calendarItems by vms.calendar.calendarItems.collectAsState()
   val todoItems by vms.todo.todoItems.collectAsState()
 
-  AppDrawer(currentPage = ui.currentPage, onPageSelected = { ui.currentPage = it }) { onMenuClick ->
+  val topThreeNotes = remember(noteGroups) {
+    noteGroups
+      .sortedByDescending { it.updatedAt }
+      .take(3)
+  }
+
+  AppDrawer(
+    currentPage = ui.currentPage,
+    topThreeNotes = topThreeNotes,
+    onPageSelected = { ui.currentPage = it },
+    onNoteGroupSelect = { id ->
+      ui.selectedNoteGroupId = id
+      ui.currentPage = AppPage.NOTES
+    },
+  ) { onMenuClick ->
     Scaffold(
       containerColor = AppColors.Background,
       contentColor = AppColors.TextPrimary,
