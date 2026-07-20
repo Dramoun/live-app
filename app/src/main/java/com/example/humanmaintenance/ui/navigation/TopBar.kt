@@ -20,8 +20,14 @@ fun AppTopBar(
 ) {
   CenterAlignedTopAppBar(
     title = {
-      Text(text= notesGroupName ?: page.label, color = AppColors.TextPrimary)
-    },
+      Text(
+        text = if (page == AppPage.NOTES) {
+          notesGroupName ?: page.label
+        } else {
+          page.label
+        },
+        color = AppColors.TextPrimary
+      )},
     navigationIcon = {
       IconButton(onClick = onMenuClick) {
         AppIcon(style = AppIcons.Menu())
