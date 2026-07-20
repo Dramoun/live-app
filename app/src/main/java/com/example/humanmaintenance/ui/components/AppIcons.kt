@@ -28,19 +28,31 @@ fun AppIcon(
   modifier: Modifier = Modifier,
   style: IconStyle,
   size: Dp = 48.dp,
+  backgroundColor: Color? = null,
+  iconColor: Color? = null,
   hasBorder: Boolean = true
 ) {
+  val bg = backgroundColor ?: style.background
+  val fg = iconColor ?: style.color
+
   Box(
     modifier = modifier
       .size(size)
-      .background(color = style.background, shape = CircleShape)
-      .border(width = if (hasBorder) 1.5.dp else 0.dp, color = style.color.copy(alpha = 0.4f), shape = CircleShape),
+      .background(
+        color = bg,
+        shape = CircleShape
+      )
+      .border(
+        width = if (hasBorder) 1.5.dp else 0.dp,
+        color = fg.copy(alpha = 0.4f),
+        shape = CircleShape
+      ),
     contentAlignment = Alignment.Center
   ) {
     Icon(
       painter = style.icon,
       contentDescription = style.contentDescription,
-      tint = style.color,
+      tint = fg,
       modifier = Modifier.size(size * 0.5f)
     )
   }

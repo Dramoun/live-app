@@ -22,6 +22,7 @@ import com.example.humanmaintenance.ui.components.AppIconType
 import com.example.humanmaintenance.ui.components.ColorPicker
 import com.example.humanmaintenance.ui.components.IconPicker
 import com.example.humanmaintenance.ui.map.NoteGroupData
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Composable
@@ -62,7 +63,9 @@ fun AddNoteGroupOverlay(
             color = color,
             icon = icon,
             notes = updateItem?.notes ?: emptyList(),
-            id = updateItem?.id ?: UUID.randomUUID().toString()
+            id = updateItem?.id ?: UUID.randomUUID().toString(),
+            createdAt = updateItem?.createdAt ?: LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
           ),
           itemExists = updateItem != null,
           onDismiss = onDismiss,

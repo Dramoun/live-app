@@ -18,18 +18,18 @@ fun MainScreen(
   financeItems: List<FinanceItemData>,
   todoItems: List<TodoItemData>,
   noteGroups: List<NoteGroupData>,
+  selectedNoteGroupId: String?,
   currentPage: AppPage,
   date: LocalDate,
   onDateChange: (LocalDate) -> Unit = {},
   onFinanceItemClick: (FinanceItemData) -> Unit = {},
   onNoteGroupClick: (NoteGroupData) -> Unit = {},
+  onNoteGroupSelect: (groupId: String) -> Unit = {},
+  onNoteClick: (NoteData) -> Unit = {},
   onCalendarItemClick: (CalendarItemData) -> Unit = {},
   onTodoItemClick: (TodoItemData) -> Unit = {},
   onPushTodoItem: (id: String) -> Unit = {},
   onSwitchTodoComplete: (id: String) -> Unit = {},
-  onAddNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
-  onUpdateNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
-  onDeleteNote: (groupId: String, NoteData) -> Unit = { _, _ -> },
   onPageSelected: (AppPage) -> Unit,
 ) {
   when (currentPage) {
@@ -51,15 +51,24 @@ fun MainScreen(
         modifier = modifier
       )
 
-    AppPage.NOTES ->
-      NotesPage(
+    AppPage.NOTE_GROUPS ->
+      NoteGroupsPage(
         noteGroups = noteGroups,
         onGroupClick = onNoteGroupClick,
-        onAddNote = onAddNote,
-        onUpdateNote = onUpdateNote,
-        onDeleteNote = onDeleteNote,
+        onGroupSelect = onNoteGroupSelect,
         modifier = modifier
       )
+
+    AppPage.NOTES -> {
+      if (selectedNoteGroupId != null) {
+        NotesPage(
+          noteGroups = noteGroups,
+          selectedGroupId = selectedNoteGroupId,
+          onNoteClick = onNoteClick,
+          modifier = modifier
+        )
+      }
+    }
 
     AppPage.FINANCE_ITEMS_DAY,
     AppPage.FINANCE_ITEMS_WEEK,

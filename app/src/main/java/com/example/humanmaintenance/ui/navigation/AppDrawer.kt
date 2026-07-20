@@ -141,10 +141,10 @@ fun AppDrawer(
 
           NavigationDrawerItem(
             label = { Text("Notes") },
-            selected = currentPage == AppPage.NOTES,
+            selected = currentPage == AppPage.NOTE_GROUPS,
             colors = itemColors,
             onClick = {
-              onPageSelected(AppPage.NOTES)
+              onPageSelected(AppPage.NOTE_GROUPS)
               scope.launch {
                 drawerState.close()
               }

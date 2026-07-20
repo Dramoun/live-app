@@ -8,5 +8,6 @@ enum class AppPage(val label: String) {
   FINANCE_ITEMS_WEEK("Weekly Finance"),
   FINANCE_ITEMS_MONTH("Monthly Finance"),
   TODO("Todo"),
+  NOTE_GROUPS("Note Groups"),
   NOTES("Notes")
 }

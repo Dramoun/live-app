@@ -4,50 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.Room
+import com.example.humanmaintenance.appPreprocess.AppViewModels
 import com.example.humanmaintenance.db.AppDatabase
 import com.example.humanmaintenance.db.migrations.MIGRATION_1_2
 import com.example.humanmaintenance.db.migrations.MIGRATION_2_3
 import com.example.humanmaintenance.db.migrations.MIGRATION_3_4
 import com.example.humanmaintenance.db.migrations.MIGRATION_4_5
 import com.example.humanmaintenance.db.migrations.MIGRATION_5_6
-import com.example.humanmaintenance.db.repositories.CalendarRepository
-import com.example.humanmaintenance.db.repositories.FinanceRepository
-import com.example.humanmaintenance.db.repositories.NoteGroupRepository
-import com.example.humanmaintenance.db.repositories.TodoRepository
 import com.example.humanmaintenance.ui.components.AddFloatingActionButton
 import com.example.humanmaintenance.ui.overlays.AddSheet
 import com.example.humanmaintenance.ui.navigation.AppDrawer
 import com.example.humanmaintenance.ui.theme.HumanMaintenanceTheme
 import com.example.humanmaintenance.ui.navigation.AppTopBar
 import com.example.humanmaintenance.ui.map.AppPage
-import com.example.humanmaintenance.ui.map.CalendarItemData
-import com.example.humanmaintenance.db.viewmodels.CalendarViewModel
-import com.example.humanmaintenance.db.viewmodels.CalendarViewModelFactory
-import com.example.humanmaintenance.ui.map.FinanceItemData
-import com.example.humanmaintenance.db.viewmodels.FinanceViewModel
-import com.example.humanmaintenance.db.viewmodels.FinanceViewModelFactory
-import com.example.humanmaintenance.db.viewmodels.NoteGroupViewModel
-import com.example.humanmaintenance.db.viewmodels.NoteGroupViewModelFactory
-import com.example.humanmaintenance.db.viewmodels.TodoViewModel
-import com.example.humanmaintenance.db.viewmodels.TodoViewModelFactory
-import com.example.humanmaintenance.ui.map.NoteGroupData
-import com.example.humanmaintenance.ui.map.TodoItemData
+import com.example.humanmaintenance.appPreprocess.EditingItem
+import com.example.humanmaintenance.appPreprocess.rememberAppUiState
+import com.example.humanmaintenance.appPreprocess.rememberAppViewModels
+import com.example.humanmaintenance.ui.navigation.BackToGroupsButton
 import com.example.humanmaintenance.ui.pages.MainScreen
 import com.example.humanmaintenance.ui.theme.AppColors
-import java.time.LocalDate
 
 
 class MainActivity : ComponentActivity() {
@@ -66,188 +50,100 @@ class MainActivity : ComponentActivity() {
       .addMigrations(MIGRATION_5_6)
       .build()
 
-    val calendarRepository = CalendarRepository(db.calendarDao())
-    val financeRepository = FinanceRepository(db.financeDao())
-    val todoRepository = TodoRepository(db.todoDao())
-    val noteGroupRepository = NoteGroupRepository(db.noteGroupDao(), db.noteDao())
-
     setContent {
       HumanMaintenanceTheme {
-        val calendarViewModel: CalendarViewModel = viewModel(
-          factory = CalendarViewModelFactory(calendarRepository)
-        )
-        val financeViewModel: FinanceViewModel = viewModel(
-          factory = FinanceViewModelFactory(financeRepository)
-        )
-        val todoViewModel: TodoViewModel = viewModel(
-          factory = TodoViewModelFactory(todoRepository)
-        )
-        val noteGroupViewModel: NoteGroupViewModel = viewModel(
-          factory = NoteGroupViewModelFactory(noteGroupRepository)
-        )
-        App(
-          calendarViewModel = calendarViewModel,
-          financeViewModel = financeViewModel,
-          todoViewModel = todoViewModel,
-          noteGroupViewModel = noteGroupViewModel
-        )
+        App(rememberAppViewModels(db))
       }
     }
   }
 }
 
 @Composable
-fun App(
-  calendarViewModel: CalendarViewModel,
-  financeViewModel: FinanceViewModel,
-  todoViewModel: TodoViewModel,
-  noteGroupViewModel: NoteGroupViewModel
+fun App(vms: AppViewModels) {
+  val ui = rememberAppUiState()
+  val financeItems by vms.finance.financeItems.collectAsState()
+  val noteGroups by vms.noteGroups.noteGroups.collectAsState()
+  val calendarItems by vms.calendar.calendarItems.collectAsState()
+  val todoItems by vms.todo.todoItems.collectAsState()
 
-) {
-  val financeItems by financeViewModel.financeItems.collectAsState()
-  // TODO: use this somehow to prepare filtered data per month
-  //  should then be much more manageble to look up data
-  val noteGroups by noteGroupViewModel.noteGroups.collectAsState()
-  var editingNoteGroup by remember { mutableStateOf<NoteGroupData?>(null) }
-  val calendarItems by calendarViewModel.calendarItems.collectAsState()
-  val todoItems by todoViewModel.todoItems.collectAsState()
-  var currentPage by remember { mutableStateOf(AppPage.CALENDAR_MONTH) }
-  var showAddSheet by remember { mutableStateOf(false) }
-  var editingFinanceItem by remember { mutableStateOf<FinanceItemData?>(null) }
-  var editingCalendarItem by remember { mutableStateOf<CalendarItemData?>(null) }
-  var editingTodoItem by remember { mutableStateOf<TodoItemData?>(null) }
-  var date by remember { mutableStateOf(LocalDate.now()) }
-
-  AppDrawer(
-    currentPage = currentPage,
-    onPageSelected = { page ->
-      currentPage = page
-    }
-  ) { onMenuClick ->
+  AppDrawer(currentPage = ui.currentPage, onPageSelected = { ui.currentPage = it }) { onMenuClick ->
     Scaffold(
       containerColor = AppColors.Background,
       contentColor = AppColors.TextPrimary,
-      floatingActionButton = {
-        AddFloatingActionButton(
-          onClick = {
-            editingCalendarItem = null
-            editingTodoItem = null
-            editingFinanceItem = null
-            editingNoteGroup = null
-            showAddSheet = true
-          }
-        )
-      },
+      floatingActionButton = { AddFloatingActionButton(onClick = ui::openAdd) },
       topBar = {
         AppTopBar(
-          page = currentPage,
+          page = ui.currentPage,
+          noteGroups.find { it.id == ui.selectedNoteGroupId }?.title,
           onMenuClick = onMenuClick
         )
       }
     ) { innerPadding ->
-      MainScreen(
-        calendarItems = calendarItems,
-        financeItems = financeItems,
-        todoItems = todoItems,
-        currentPage = currentPage,
-        date = date,
-        onDateChange = { newDate ->
-          date = newDate
-        },
-        onAddNote = { groupId, note ->
-          noteGroupViewModel.addNote(groupId, note)
-        },
-        onUpdateNote = { groupId, note ->
-          noteGroupViewModel.updateNote(groupId, note)
-        },
-        onDeleteNote = { groupId, note ->
-          noteGroupViewModel.deleteNote(groupId, note)
-        },
-        onFinanceItemClick = { item ->
-          editingFinanceItem = item
-          showAddSheet = true
-        },
-        onCalendarItemClick = { item ->
-          editingCalendarItem = item
-          showAddSheet = true
-        },
-        onTodoItemClick = { item ->
-          editingTodoItem = item
-          showAddSheet = true
-        },
-        onPushTodoItem = { id ->
-          todoViewModel.pushTodoItem(id)
-        },
-        onSwitchTodoComplete = { id ->
-          todoViewModel.toggleComplete(id)
-        },
-        onPageSelected = { page ->
-          currentPage = page
-        },
-        noteGroups = noteGroups,
-        onNoteGroupClick = { item ->
-          editingNoteGroup = item
-          showAddSheet = true
-        },
-        modifier = Modifier.padding(innerPadding)
-      )
-
-      if (showAddSheet) {
-        AddSheet(
-          currentPage = currentPage,
-          updateFinanceItem = editingFinanceItem,
-          updateCalendarItem = editingCalendarItem,
-          updateNoteGroup = editingNoteGroup,
-          updateTodoItem = editingTodoItem,
-          date = date,
-          onDismiss = {
-            showAddSheet = false
-            editingFinanceItem = null
-            editingCalendarItem = null
-            editingTodoItem = null
-            editingNoteGroup = null
+      Box(Modifier.padding(innerPadding)) {
+        MainScreen(
+          calendarItems = calendarItems,
+          financeItems = financeItems,
+          todoItems = todoItems,
+          currentPage = ui.currentPage,
+          date = ui.date,
+          onDateChange = { ui.date = it },
+          onFinanceItemClick = { ui.openEdit(EditingItem.Finance(it)) },
+          onCalendarItemClick = { ui.openEdit(EditingItem.Calendar(it)) },
+          onTodoItemClick = { ui.openEdit(EditingItem.Todo(it)) },
+          onPushTodoItem = { vms.todo.pushTodoItem(it) },
+          onSwitchTodoComplete = { vms.todo.toggleComplete(it) },
+          onPageSelected = { ui.currentPage = it },
+          noteGroups = noteGroups,
+          selectedNoteGroupId = ui.selectedNoteGroupId,
+          onNoteGroupClick = { ui.openEdit(EditingItem.NoteGroup(it)) },
+          onNoteGroupSelect = { id ->
+            ui.selectedNoteGroupId = id
+            ui.currentPage = AppPage.NOTES
           },
-          onAddFinance = { item: FinanceItemData ->
-            financeViewModel.addItem(item)
-            showAddSheet = false
-            editingFinanceItem = null
+          onNoteClick = { note ->
+            ui.openEdit(EditingItem.Note(ui.selectedNoteGroupId!!, note))
           },
-          onFinanceDelete = { item: FinanceItemData ->
-            financeViewModel.deleteItem(item)
-            showAddSheet = false
-            editingFinanceItem = null
-          },
-          onAddCalendar = { item: CalendarItemData ->
-            calendarViewModel.addItem(item)
-            showAddSheet = false
-            editingCalendarItem = null
-          },
-          onAddTodo = { item: TodoItemData ->
-            todoViewModel.addItem(item)
-            showAddSheet = false
-            editingTodoItem = null
-          },
-          onCalendarDelete = { item: CalendarItemData ->
-            calendarViewModel.deleteItem(item)
-            showAddSheet = false
-            editingCalendarItem = null
-          },
-          onTodoDelete = { item: TodoItemData ->
-            todoViewModel.deleteItem(item)
-            showAddSheet = false
-            editingTodoItem = null
-          },
-          onAddNoteGroup = { item: NoteGroupData ->
-            noteGroupViewModel.addGroup(item)
-            showAddSheet = false
-            editingNoteGroup = null
-          },
-          onNoteGroupDelete = { item: NoteGroupData ->
-            noteGroupViewModel.deleteGroup(item)
-            showAddSheet = false
-            editingNoteGroup = null
-          },
+          modifier = Modifier
         )
+
+        if (ui.currentPage == AppPage.NOTES) {
+          BackToGroupsButton(
+            modifier = Modifier.align(Alignment.BottomStart),
+            onClick = { ui.currentPage = AppPage.NOTE_GROUPS }
+          )
+        }
+
+        if (ui.showAddSheet) {
+          AddSheet(
+            currentPage = ui.currentPage,
+            editingItem = ui.editingItem,
+            selectedNoteGroupId = ui.selectedNoteGroupId,
+            date = ui.date,
+            onDismiss = ui::closeSheet,
+            onSave = { item, isUpdate ->
+              when (item) {
+                is EditingItem.Finance -> if (isUpdate) vms.finance.updateItem(item.item) else vms.finance.addItem(item.item)
+                is EditingItem.Calendar -> if (isUpdate) vms.calendar.updateItem(item.item) else vms.calendar.addItem(item.item)
+                is EditingItem.Todo -> if (isUpdate) vms.todo.updateItem(item.item) else vms.todo.addItem(item.item)
+                is EditingItem.NoteGroup -> if (isUpdate) vms.noteGroups.updateGroup(item.item) else vms.noteGroups.addGroup(item.item)
+                is EditingItem.Note -> if (isUpdate) vms.noteGroups.updateNote(item.groupId, item.item) else vms.noteGroups.addNote(item.groupId, item.item)
+                EditingItem.None -> {}
+              }
+              ui.closeSheet()
+            },
+            onDelete = { item ->
+              when (item) {
+                is EditingItem.Finance -> vms.finance.deleteItem(item.item)
+                is EditingItem.Calendar -> vms.calendar.deleteItem(item.item)
+                is EditingItem.Todo -> vms.todo.deleteItem(item.item)
+                is EditingItem.NoteGroup -> vms.noteGroups.deleteGroup(item.item)
+                is EditingItem.Note -> vms.noteGroups.deleteNote(item.groupId, item.item)
+                EditingItem.None -> {}
+              }
+              ui.closeSheet()
+            }
+          )
+        }
       }
     }
   }

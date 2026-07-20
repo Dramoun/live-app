@@ -15,11 +15,12 @@ import com.example.humanmaintenance.ui.theme.AppColors
 @Composable
 fun AppTopBar(
   page: AppPage,
+  notesGroupName: String?,
   onMenuClick: () -> Unit
 ) {
   CenterAlignedTopAppBar(
     title = {
-      Text(page.label, color = AppColors.TextPrimary)
+      Text(text= notesGroupName ?: page.label, color = AppColors.TextPrimary)
     },
     navigationIcon = {
       IconButton(onClick = onMenuClick) {
