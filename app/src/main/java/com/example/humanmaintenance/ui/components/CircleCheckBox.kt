@@ -15,21 +15,35 @@ fun CircleCheckBox(
   state: Boolean,
   style: IconStyle,
   size: Dp = 48.dp,
+  alwaysShowIcon: Boolean = true,
   onStateChange: (Boolean) -> Unit
 ) {
+  val backgroundColor = if (state) {
+    AppColors.SuccessBackGround
+  } else {
+    AppColors.ErrorBackGround
+  }
+
+  val iconColor = if (state || alwaysShowIcon) {
+    if (state) AppColors.Success else AppColors.Error
+  } else {
+    backgroundColor
+  }
+
   val checkboxIcon = IconStyle(
     icon = style.icon,
     contentDescription = style.contentDescription,
-    color = if (state) AppColors.Success else AppColors.Error,
-    background = if (state) AppColors.SuccessBackGround else AppColors.ErrorBackGround,
+    color = iconColor,
+    background = backgroundColor,
   )
 
   AppIcon(
     modifier = Modifier
       .clip(CircleShape)
-      .clickable {onStateChange(!state)},
+      .clickable { onStateChange(!state) },
     style = checkboxIcon,
     size = size,
-    hasBorder = state
+    hasBorder = state,
+    showIcon = state || alwaysShowIcon
   )
 }

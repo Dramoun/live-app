@@ -26,7 +26,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import com.example.humanmaintenance.ui.components.AppIcon
+import com.example.humanmaintenance.ui.components.AppIconType
 import com.example.humanmaintenance.ui.components.AppIcons
+import com.example.humanmaintenance.ui.components.CircleCheckBox
+import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.CompletedColor
 import com.example.humanmaintenance.ui.map.TodoItemData
 import com.example.humanmaintenance.ui.map.priorityDisplayLabel
@@ -73,13 +76,19 @@ fun TodoItem(
           .padding(horizontal = 6.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
       ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-          Checkbox(
-            checked = data.completed,
-            onCheckedChange = { switchComplete(data.id) },
-            modifier = Modifier.scale(0.85f)
-          )
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
           Spacer(Modifier.width(4.dp))
+          CircleCheckBox(
+            state = data.completed,
+            style = AppIconType.REFRESH.toStyle(),
+            size = 42.dp,
+            alwaysShowIcon = false,
+            onStateChange = { switchComplete(data.id) }
+          )
+          Spacer(Modifier.width(8.dp))
           Text(priorityDisplayLabel(data), color = data.priorityActual.color)
         }
       }

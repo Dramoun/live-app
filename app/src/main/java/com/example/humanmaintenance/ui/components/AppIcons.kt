@@ -30,7 +30,8 @@ fun AppIcon(
   size: Dp = 48.dp,
   backgroundColor: Color? = null,
   iconColor: Color? = null,
-  hasBorder: Boolean = true
+  hasBorder: Boolean = true,
+  showIcon: Boolean = true
 ) {
   val bg = backgroundColor ?: style.background
   val fg = iconColor ?: style.color
@@ -49,12 +50,14 @@ fun AppIcon(
       ),
     contentAlignment = Alignment.Center
   ) {
-    Icon(
-      painter = style.icon,
-      contentDescription = style.contentDescription,
-      tint = fg,
-      modifier = Modifier.size(size * 0.5f)
-    )
+    if (showIcon) {
+      Icon(
+        painter = style.icon,
+        contentDescription = style.contentDescription,
+        tint = fg,
+        modifier = Modifier.size(size * 0.5f)
+      )
+    }
   }
 }
 
