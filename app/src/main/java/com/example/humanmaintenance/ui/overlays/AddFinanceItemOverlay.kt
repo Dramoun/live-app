@@ -3,6 +3,7 @@ package com.example.humanmaintenance.ui.overlays
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -64,89 +65,97 @@ fun AddFinanceItemOverlay(
   val effectiveEndDate = if (recurrence == Recurrence.ONE_TIME) initialDate else endDate
 
   Dialog(onDismissRequest = onDismiss) {
-    Card {
-      Column(
-        modifier = Modifier
-          .padding(16.dp)
-          .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-      ) {
-        Text(if (updateItem != null) "Update Item" else "Add Item")
-
-        OutlinedTextField(
-          value = title,
-          onValueChange = { title = it },
-          label = { Text("Name") },
-          modifier = Modifier.fillMaxWidth()
+    Card(
+      modifier = Modifier.heightIn(max = 800.dp)
+    ) {
+      Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+          if (updateItem != null) "Update Item" else "Add Item",
+          modifier = Modifier.padding(16.dp)
         )
 
-        OutlinedTextField(
-          value = amount,
-          onValueChange = { amount = it },
-          label = { Text("Amount") },
-          modifier = Modifier.fillMaxWidth(),
-          keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number
+        Column(
+          modifier = Modifier
+            .weight(1f)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+          verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+          OutlinedTextField(
+            value = title,
+            onValueChange = { title = it },
+            label = { Text("Name") },
+            modifier = Modifier.fillMaxWidth()
           )
-        )
 
-        ChipSelector(
-          label = "Category",
-          entries = Category.entries.toList(),
-          selected = category,
-          onSelected = { category = it },
-          text = { it.label }
-        )
+          OutlinedTextField(
+            value = amount,
+            onValueChange = { amount = it },
+            label = { Text("Amount") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(
+              keyboardType = KeyboardType.Number
+            )
+          )
 
-        if (category == Category.INCOME) {
           ChipSelector(
-            label = "Type",
-            entries = IncomeType.entries.toList(),
-            selected = incomeType,
-            onSelected = { incomeType = it },
+            label = "Category",
+            entries = Category.entries.toList(),
+            selected = category,
+            onSelected = { category = it },
             text = { it.label }
           )
-        } else {
+
+          if (category == Category.INCOME) {
+            ChipSelector(
+              label = "Type",
+              entries = IncomeType.entries.toList(),
+              selected = incomeType,
+              onSelected = { incomeType = it },
+              text = { it.label }
+            )
+          } else {
+            ChipSelector(
+              label = "Type",
+              entries = ExpenseType.entries.toList(),
+              selected = expenseType,
+              onSelected = { expenseType = it },
+              text = { it.label }
+            )
+          }
+
           ChipSelector(
-            label = "Type",
-            entries = ExpenseType.entries.toList(),
-            selected = expenseType,
-            onSelected = { expenseType = it },
+            label = "Priority",
+            entries = Priority.entries.toList(),
+            selected = priority,
+            onSelected = { priority = it },
             text = { it.label }
           )
-        }
 
-        ChipSelector(
-          label = "Priority",
-          entries = Priority.entries.toList(),
-          selected = priority,
-          onSelected = { priority = it },
-          text = { it.label }
-        )
-
-        ChipSelector(
-          label = "Recurrence",
-          entries = Recurrence.entries.toList(),
-          selected = recurrence,
-          onSelected = { recurrence = it },
-          text = { it.label }
-        )
-
-        if (recurrence == Recurrence.ONE_TIME) {
-          DateField(
-            label = "Date",
-            date = initialDate,
-            onDateChange = { initialDate = it }
+          ChipSelector(
+            label = "Recurrence",
+            entries = Recurrence.entries.toList(),
+            selected = recurrence,
+            onSelected = { recurrence = it },
+            text = { it.label }
           )
-        } else {
-          DateRangeField(
-            startDate = initialDate,
-            endDate = effectiveEndDate,
-            onRangeChange = { start, end ->
-              initialDate = start
-              endDate = end
-            }
-          )
+
+          if (recurrence == Recurrence.ONE_TIME) {
+            DateField(
+              label = "Date",
+              date = initialDate,
+              onDateChange = { initialDate = it }
+            )
+          } else {
+            DateRangeField(
+              startDate = initialDate,
+              endDate = effectiveEndDate,
+              onRangeChange = { start, end ->
+                initialDate = start
+                endDate = end
+              }
+            )
+          }
         }
 
         OverLayFooter(

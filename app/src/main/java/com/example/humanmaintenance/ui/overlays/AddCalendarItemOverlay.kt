@@ -3,6 +3,7 @@ package com.example.humanmaintenance.ui.overlays
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -53,77 +54,85 @@ fun AddCalendarItemOverlay(
   Dialog(
     onDismissRequest = onDismiss
   ) {
-    Card{
-      Column(
-        modifier = Modifier
-          .padding(16.dp)
-          .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-      ) {
-        Text(if (updateItem != null) "Update Item" else "Add Calendar Item")
-
-        OutlinedTextField(
-          value = title,
-          onValueChange = { title = it },
-          label = { Text("Title") },
-          modifier = Modifier.fillMaxWidth()
+    Card(
+      modifier = Modifier.heightIn(max = 800.dp)
+    ) {
+      Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+          if (updateItem != null) "Update Item" else "Add Calendar Item",
+          modifier = Modifier.padding(16.dp)
         )
 
-        OutlinedTextField(
-          value = description,
-          onValueChange = { description = it },
-          label = { Text("Description") },
-          modifier = Modifier.fillMaxWidth()
-        )
+        Column(
+          modifier = Modifier
+            .weight(1f)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+          verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+          OutlinedTextField(
+            value = title,
+            onValueChange = { title = it },
+            label = { Text("Title") },
+            modifier = Modifier.fillMaxWidth()
+          )
 
-        ChipSelector(
-          label = "Type",
-          entries = Type.entries.toList(),
-          selected = type,
-          onSelected = { type = it },
-          text = { it.label }
-        )
+          OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Description") },
+            modifier = Modifier.fillMaxWidth()
+          )
 
-        ChipSelectorMulti(
-          label = "Tags",
-          entries = Tag.entries,
-          selected = tags,
-          onSelectionChange = { tags = it },
-          text = { it.label }
-        )
+          ChipSelector(
+            label = "Type",
+            entries = Type.entries.toList(),
+            selected = type,
+            onSelected = { type = it },
+            text = { it.label }
+          )
 
-        TimeInput(
-          label = "Start Time",
-          time = startTime,
-          onTimeChange = {
-            startTime = it ?: LocalTime.now().withSecond(0).withNano(0)
-          }
-        )
+          ChipSelectorMulti(
+            label = "Tags",
+            entries = Tag.entries,
+            selected = tags,
+            onSelectionChange = { tags = it },
+            text = { it.label }
+          )
 
-        TimeInput(
-          label = "End Time",
-          time = endTime,
-          required = false,
-          onTimeChange = {
-            endTime = it
-          }
-        )
+          TimeInput(
+            label = "Start Time",
+            time = startTime,
+            onTimeChange = {
+              startTime = it ?: LocalTime.now().withSecond(0).withNano(0)
+            }
+          )
 
-        ColorPicker(
-          label = "Color",
-          selected = color,
-          onSelected = {
-            color = it
-          }
-        )
+          TimeInput(
+            label = "End Time",
+            time = endTime,
+            required = false,
+            onTimeChange = {
+              endTime = it
+            }
+          )
 
-        IconPicker(
-          label = "Icon",
-          selected = icon,
-          onSelected = {
-            icon = it
-          }
-        )
+          ColorPicker(
+            label = "Color",
+            selected = color,
+            onSelected = {
+              color = it
+            }
+          )
+
+          IconPicker(
+            label = "Icon",
+            selected = icon,
+            onSelected = {
+              icon = it
+            }
+          )
+        }
 
         OverLayFooter(
           itemData = CalendarItemData(
