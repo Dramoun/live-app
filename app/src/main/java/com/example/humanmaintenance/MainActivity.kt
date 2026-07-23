@@ -30,6 +30,7 @@ import com.example.humanmaintenance.ui.map.AppPage
 import com.example.humanmaintenance.appPreprocess.EditingItem
 import com.example.humanmaintenance.appPreprocess.rememberAppUiState
 import com.example.humanmaintenance.appPreprocess.rememberAppViewModels
+import com.example.humanmaintenance.db.migrations.MIGRATION_6_7
 import com.example.humanmaintenance.ui.navigation.BackToGroupsButton
 import com.example.humanmaintenance.ui.pages.MainScreen
 import com.example.humanmaintenance.ui.theme.AppColors
@@ -49,6 +50,7 @@ class MainActivity : ComponentActivity() {
       .addMigrations(MIGRATION_3_4)
       .addMigrations(MIGRATION_4_5)
       .addMigrations(MIGRATION_5_6)
+      .addMigrations(MIGRATION_6_7)
       .build()
 
     setContent {

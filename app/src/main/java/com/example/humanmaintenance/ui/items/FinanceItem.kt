@@ -15,22 +15,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.humanmaintenance.ui.components.AppIcon
-import com.example.humanmaintenance.ui.components.IconStyle
-import com.example.humanmaintenance.ui.map.Category
-import com.example.humanmaintenance.ui.map.Priority
-import com.example.humanmaintenance.ui.map.Recurrence
+import com.example.humanmaintenance.ui.components.toStyle
+import com.example.humanmaintenance.ui.map.FinanceItemData
 import com.example.humanmaintenance.ui.theme.AppColors
 
 @Composable
 fun FinanceItem(
   modifier: Modifier = Modifier,
-  header: String,
-  icon: IconStyle,
-  category: Category,
-  priority: Priority,
-  recurrence: Recurrence,
-  pageAmountText: String,
-  amount: Number
+  financeItem: FinanceItemData,
+  pageAmountText: String
 ) {
   Row(
     modifier = modifier
@@ -43,38 +36,53 @@ fun FinanceItem(
           strokeWidth = 1.dp.toPx()
         )
       }
-      .padding(10.dp),
+      .padding(5.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(12.dp)
   ) {
-    AppIcon(style = icon)
+    AppIcon(
+      style = financeItem.icon.toStyle()
+    )
     Column(
       modifier = Modifier.weight(1f)
     ) {
       Text(
-        text = header,
+        text = financeItem.header,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         color = AppColors.TextPrimary
       )
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+      Column(
+        verticalArrangement = Arrangement.spacedBy(0.dp)
       ) {
-        Text(
-          text = category.label,
-          color = AppColors.TextSecondary,
-          fontSize = 12.sp
-        )
-        Text(
-          text = priority.label,
-          color = AppColors.TextSecondary,
-          fontSize = 12.sp
-        )
-        Text(
-          text = recurrence.label,
-          color = AppColors.TextSecondary,
-          fontSize = 12.sp
-        )
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+          Text(
+            text = financeItem.category.label,
+            color = AppColors.TextSecondary,
+            fontSize = 12.sp
+          )
+          Text(
+            text = financeItem.type.label,
+            color = AppColors.TextSecondary,
+            fontSize = 12.sp
+          )
+        }
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+          Text(
+            text = financeItem.priority.label,
+            color = AppColors.TextSecondary,
+            fontSize = 10.sp
+          )
+          Text(
+            text = financeItem.recurrence.label,
+            color = AppColors.TextSecondary,
+            fontSize = 10.sp
+          )
+        }
       }
     }
 
@@ -82,7 +90,7 @@ fun FinanceItem(
       horizontalAlignment = Alignment.End
     ) {
       Text(
-        text = amount.toString(),
+        text = financeItem.amount.toString(),
         color = AppColors.Income
       )
 

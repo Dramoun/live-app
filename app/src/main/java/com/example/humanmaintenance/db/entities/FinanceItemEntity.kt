@@ -9,6 +9,7 @@ data class FinanceItemEntity(
   val header: String,
   val icon: String,
   val category: String,
+  val type: String,
   val priority: String,
   val recurrence: String,
   val amount: Long,

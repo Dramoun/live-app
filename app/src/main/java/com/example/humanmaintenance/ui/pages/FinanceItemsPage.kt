@@ -154,12 +154,7 @@ fun FinanceItemsPage(
             "(%.2f)".format(item.amountFor(viewMode))
 
         FinanceItem(
-          icon = item.icon.toStyle(),
-          header = item.header,
-          category = item.category,
-          priority = item.priority,
-          recurrence = item.recurrence,
-          amount = item.amount,
+          financeItem = item,
           pageAmountText = pageAmountText,
           modifier = Modifier.clickable { onItemClick(item) }
         )

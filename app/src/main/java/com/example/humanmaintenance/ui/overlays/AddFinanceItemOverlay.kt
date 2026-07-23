@@ -24,7 +24,9 @@ import com.example.humanmaintenance.ui.components.ChipSelector
 import com.example.humanmaintenance.ui.components.DateField
 import com.example.humanmaintenance.ui.components.DateRangeField
 import com.example.humanmaintenance.ui.map.Category
+import com.example.humanmaintenance.ui.map.ExpenseType
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.IncomeType
 import com.example.humanmaintenance.ui.map.Priority
 import com.example.humanmaintenance.ui.map.Recurrence
 import java.time.LocalDate
@@ -45,6 +47,17 @@ fun AddFinanceItemOverlay(
   var endDate by remember { mutableStateOf(updateItem?.endDate)}
 
   var category by remember { mutableStateOf(updateItem?.category ?: Category.EXPENSE) }
+  var incomeType by remember {
+    mutableStateOf(
+      (updateItem?.type as? IncomeType) ?: IncomeType.OTHER
+    )
+  }
+
+  var expenseType by remember {
+    mutableStateOf(
+      (updateItem?.type as? ExpenseType) ?: ExpenseType.OTHER
+    )
+  }
   var priority by remember { mutableStateOf(updateItem?.priority ?: Priority.ESSENTIAL) }
   var recurrence by remember { mutableStateOf(updateItem?.recurrence ?: Recurrence.MONTHLY) }
 
@@ -85,6 +98,24 @@ fun AddFinanceItemOverlay(
           text = { it.label }
         )
 
+        if (category == Category.INCOME) {
+          ChipSelector(
+            label = "Type",
+            entries = IncomeType.entries.toList(),
+            selected = incomeType,
+            onSelected = { incomeType = it },
+            text = { it.label }
+          )
+        } else {
+          ChipSelector(
+            label = "Type",
+            entries = ExpenseType.entries.toList(),
+            selected = expenseType,
+            onSelected = { expenseType = it },
+            text = { it.label }
+          )
+        }
+
         ChipSelector(
           label = "Priority",
           entries = Priority.entries.toList(),
@@ -117,28 +148,32 @@ fun AddFinanceItemOverlay(
             }
           )
         }
-      }
 
-      OverLayFooter(
-        itemData = FinanceItemData(
-          header = title,
-          icon = when (category) {
-            Category.INCOME -> AppIconType.INCOME
-            Category.EXPENSE -> AppIconType.EXPENSE
-          },
-          category = category,
-          priority = priority,
-          recurrence = recurrence,
-          amount = amount.toIntOrNull() ?: 0,
-          id = updateItem?.id ?: UUID.randomUUID().toString(),
-          initialDate = initialDate,
-          endDate = effectiveEndDate
-        ),
-        itemExists = updateItem != null,
-        onDismiss = onDismiss,
-        onDelete = onDelete,
-        onAdd = onAdd
-      )
+        OverLayFooter(
+          itemData = FinanceItemData(
+            header = title,
+            icon = when (category) {
+              Category.INCOME -> AppIconType.INCOME
+              Category.EXPENSE -> AppIconType.EXPENSE
+            },
+            category = category,
+            priority = priority,
+            recurrence = recurrence,
+            amount = amount.toIntOrNull() ?: 0,
+            type = when (category) {
+              Category.INCOME -> incomeType
+              Category.EXPENSE -> expenseType
+            },
+            id = updateItem?.id ?: UUID.randomUUID().toString(),
+            initialDate = initialDate,
+            endDate = effectiveEndDate
+          ),
+          itemExists = updateItem != null,
+          onDismiss = onDismiss,
+          onDelete = onDelete,
+          onAdd = onAdd
+        )
+      }
     }
   }
 }

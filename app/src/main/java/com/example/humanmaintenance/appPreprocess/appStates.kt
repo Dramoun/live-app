@@ -23,7 +23,7 @@ sealed interface EditingItem {
 }
 
 class AppUiState {
-  var currentPage by mutableStateOf(AppPage.TODO)
+  var currentPage by mutableStateOf(AppPage.CALENDAR_MONTH)
   var date by mutableStateOf(LocalDate.now())
   var selectedNoteGroupId by mutableStateOf<String?>(null)
   var showAddSheet by mutableStateOf(false)
