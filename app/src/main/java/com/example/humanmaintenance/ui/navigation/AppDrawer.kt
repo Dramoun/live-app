@@ -71,6 +71,20 @@ fun AppDrawer(
             style = MaterialTheme.typography.titleMedium,
             color = AppColors.TextPrimary
           )
+
+          NavigationDrawerItem(
+            label = { Text("Monthly Overview") },
+            selected = currentPage == AppPage.FINANCE_OVERVIEW_MONTH,
+            colors = itemColors,
+            onClick = {
+              onPageSelected(AppPage.FINANCE_OVERVIEW_MONTH)
+              scope.launch {
+                drawerState.close()
+              }
+            }
+          )
+
+
           NavigationDrawerItem(
             label = { Text("Daily") },
             selected = currentPage == AppPage.FINANCE_ITEMS_DAY,

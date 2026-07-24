@@ -87,6 +87,14 @@ fun MainScreen(
       )
     }
 
+    AppPage.FINANCE_OVERVIEW_MONTH -> {
+      FinanceMonthlyOverview(
+        date = date,
+        onDateChange = onDateChange,
+        financeItems = financeItems,
+      )
+    }
+
     AppPage.TODO ->
       TodoPage(
         date = date,

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.humanmaintenance.ui.components.AppIcon
 import com.example.humanmaintenance.ui.components.toStyle
 import com.example.humanmaintenance.ui.map.FinanceItemData
+import com.example.humanmaintenance.ui.map.formatMoney
 import com.example.humanmaintenance.ui.theme.AppColors
 
 @Composable
@@ -90,7 +91,7 @@ fun FinanceItem(
       horizontalAlignment = Alignment.End
     ) {
       Text(
-        text = financeItem.amount.toString(),
+        text = formatMoney(financeItem.amount.toInt()),
         color = AppColors.Income
       )
 

@@ -37,6 +37,8 @@ import java.util.Locale
 import kotlin.collections.forEach
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.unit.sp
+import com.example.humanmaintenance.ui.map.formatMoney
+import kotlin.math.roundToInt
 
 private val Recurrence.sortRank: Int
   get() = when (this) {
@@ -151,7 +153,7 @@ fun FinanceItemsPage(
           if (item.recurrence == Recurrence.ONE_TIME)
             ""
           else
-            "(%.2f)".format(item.amountFor(viewMode))
+            formatMoney(item.amountFor(viewMode).roundToInt())
 
         FinanceItem(
           financeItem = item,
@@ -173,7 +175,7 @@ fun FinanceItemsPage(
         )
 
         Text(
-          text = String.format(LocalLocale.current.platformLocale, "%.2f", totalExpense),
+          text = formatMoney(totalExpense.toInt()),
           color = AppColors.Expense,
           fontSize = 20.sp
         )
@@ -233,8 +235,6 @@ fun FinanceItemData.overlaps(start: LocalDate, end: LocalDate): Boolean {
   return initialDate <= end &&
       (endDate == null || endDate >= start)
 }
-
-
 
 private const val DAYS_PER_YEAR = 365.25
 private const val DAYS_PER_MONTH = DAYS_PER_YEAR / 12.0

@@ -40,7 +40,9 @@ fun AddSheet(
         onAdd = { onSave(EditingItem.Calendar(it), existing != null) }
       )
     }
-    AppPage.CALENDAR_MONTH -> null
+    AppPage.CALENDAR_MONTH,
+    AppPage.FINANCE_OVERVIEW_MONTH -> null
+
     AppPage.TODO -> {
       val existing = (editingItem as? EditingItem.Todo)?.item
       AddTodoItemOverlay(

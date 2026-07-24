@@ -75,6 +75,12 @@ fun App(vms: AppViewModels) {
       .take(3)
   }
 
+  val showFab = when (ui.currentPage) {
+    AppPage.CALENDAR_MONTH,
+    AppPage.FINANCE_OVERVIEW_MONTH -> false
+    else -> true
+  }
+
   AppDrawer(
     currentPage = ui.currentPage,
     topThreeNotes = topThreeNotes,
@@ -87,7 +93,11 @@ fun App(vms: AppViewModels) {
     Scaffold(
       containerColor = AppColors.Background,
       contentColor = AppColors.TextPrimary,
-      floatingActionButton = { AddFloatingActionButton(onClick = ui::openAdd) },
+      floatingActionButton = {
+        if (showFab) {
+          AddFloatingActionButton(onClick = ui::openAdd)
+        }
+      },
       topBar = {
         AppTopBar(
           page = ui.currentPage,

@@ -1,6 +1,5 @@
 package com.example.humanmaintenance.ui.theme
 
-import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.compose.ui.graphics.Color
 
 object AppColors {
@@ -25,4 +24,13 @@ object AppColors {
   val Error = Color(0xFFF87171)
   val ErrorBackGround = Color(0x26F87171)
 
+  // Card background washes (low-alpha tints for InfoCard backgroundColor)
+  val BlueBackground = Color(0x2660A5FA)
+  val OrangeBackground = Color(0x26FB923C)
+  val PurpleBackground = Color(0x26C084FC)
+  val NeutralBackground = Color(0x26888888)
+  val GreenBackground = Color(0x264ADE80)
+  val RedBackground = Color(0x26F87171)
+  val CyanBackground = Color(0x2622D3EE)
+  val PinkBackground = Color(0x26F472B6)
 }
