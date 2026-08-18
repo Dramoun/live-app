@@ -25,6 +25,9 @@ interface NoteGroupDao {
   @Delete
   suspend fun delete(group: NoteGroupEntity)
 
+  @Query("UPDATE note_groups SET updatedAt = :updatedAt WHERE id = :groupId")
+  suspend fun touch(groupId: String, updatedAt: String)
+
   @Transaction
   @Query("SELECT * FROM note_groups")
   fun getAllWithNotes(): Flow<List<NoteGroupWithNotesEntity>>

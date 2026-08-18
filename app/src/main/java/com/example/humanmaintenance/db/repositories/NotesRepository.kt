@@ -9,6 +9,8 @@ import com.example.humanmaintenance.ui.map.NoteGroupData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+import java.time.LocalDateTime
+
 class NoteGroupRepository(
   private val groupDao: NoteGroupDao,
   private val noteDao: NoteDao
@@ -23,9 +25,18 @@ class NoteGroupRepository(
 
   suspend fun deleteGroup(group: NoteGroupData) = groupDao.delete(group.toEntity())
 
-  suspend fun addNote(groupId: String, note: NoteData) = noteDao.insert(note.toEntity(groupId))
+  suspend fun addNote(groupId: String, note: NoteData) {
+    noteDao.insert(note.toEntity(groupId))
+    groupDao.touch(groupId, LocalDateTime.now().toString())
+  }
 
-  suspend fun updateNote(groupId: String, note: NoteData) = noteDao.update(note.toEntity(groupId))
+  suspend fun updateNote(groupId: String, note: NoteData) {
+    noteDao.update(note.toEntity(groupId))
+    groupDao.touch(groupId, LocalDateTime.now().toString())
+  }
 
-  suspend fun deleteNote(groupId: String, note: NoteData) = noteDao.delete(note.toEntity(groupId))
+  suspend fun deleteNote(groupId: String, note: NoteData) {
+    noteDao.delete(note.toEntity(groupId))
+    groupDao.touch(groupId, LocalDateTime.now().toString())
+  }
 }
