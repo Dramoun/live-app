@@ -49,7 +49,8 @@ data class FinanceMonthlySummary(
   val luxuryPercentage: Float,
 
   val top3EssentialTypes: List<FinanceTypeAmount>,
-  val top3OptionalTypes: List<FinanceTypeAmount>
+  val top3OptionalTypes: List<FinanceTypeAmount>,
+  val top3Types: List<FinanceTypeAmount>
 )
 
 @Composable
@@ -145,6 +146,18 @@ fun FinanceMonthlyOverview(
         backgroundColor = AppColors.BlueBackground
       )
     }
+
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+      TopTypesCard(
+        modifier = Modifier.weight(1f),
+        title = "Top 3 Types",
+        entries = summary.top3Types,
+        backgroundColor = AppColors.OrangeBackground
+      )
+    }
   }
 }
 
@@ -163,6 +176,7 @@ fun calculateMonthlySummary(
 
   val essentialByType = HashMap<FinanceType, Int>()
   val optionalByType = HashMap<FinanceType, Int>()
+  val justType = HashMap<FinanceType, Int>()
 
   items.forEach { item ->
     val amount = item.amountFor(FinanceViewMode.MONTH).roundToInt()
@@ -175,17 +189,25 @@ fun calculateMonthlySummary(
       Category.EXPENSE -> {
         totalExpenses += amount
 
+        // Track total by type, regardless of priority
+        justType.merge(item.type, amount, Int::plus)
+
         when (item.priority) {
           Priority.ESSENTIAL -> {
             essentialTotal += amount
             essentialByType.merge(item.type, amount, Int::plus)
           }
+
           Priority.OPTIONAL -> {
             optionalTotal += amount
             optionalByType.merge(item.type, amount, Int::plus)
           }
-          Priority.LUXURY -> luxuryTotal += amount
-          Priority.SAVINGS -> Unit // not currently tracked in this view
+
+          Priority.LUXURY -> {
+            luxuryTotal += amount
+          }
+
+          Priority.SAVINGS -> Unit
         }
       }
     }
@@ -203,6 +225,12 @@ fun calculateMonthlySummary(
     .map { FinanceTypeAmount(it.key.label, it.value) }
 
   val top3OptionalTypes = optionalByType.entries
+    .sortedByDescending { it.value }
+    .take(3)
+    .map { FinanceTypeAmount(it.key.label, it.value) }
+
+  // Top 3 expense types across ALL priorities
+  val top3Types = justType.entries
     .sortedByDescending { it.value }
     .take(3)
     .map { FinanceTypeAmount(it.key.label, it.value) }
@@ -225,7 +253,8 @@ fun calculateMonthlySummary(
     luxuryPercentage = percentage(luxuryTotal, totalExpenses),
 
     top3EssentialTypes = top3EssentialTypes,
-    top3OptionalTypes = top3OptionalTypes
+    top3OptionalTypes = top3OptionalTypes,
+    top3Types = top3Types
   )
 }
 
